@@ -7,12 +7,19 @@ const Root = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .card {
+    perspective: 3000px;
+    width: 200px;
+  }
 `;
 
 export default function Table() {
   return (
     <Root>
-      <Card></Card>
+      <div className="card">
+        <Card color="blue" />
+      </div>
     </Root>
   );
 }
