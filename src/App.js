@@ -1,24 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import styled from "styled-components";
+import { Routes, Route } from "react-router-dom";
+import Game from "./Components/Game/Game";
+const Root = styled.div`
+  min-height: 100vh;
+  background: linear-gradient(152deg, #045850, #036a60 40%, #027059);
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Root>
+      <Routes>
+        <Route path="/game" element={<Game />} />
+      </Routes>
+    </Root>
   );
 }
 
