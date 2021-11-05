@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import Image from "../Image/Image";
+import { motion } from "framer-motion";
 
 const Root = styled.div`
   --color: var(--${(props) => props.color});
-  perspective: 2500px;
 
   /* overflow: hidden; */
   padding-top: 141%;
   border-radius: 10px;
   position: relative;
   transform-style: preserve-3d;
-  animation: aa 2s infinite linear;
+  /* animation: aa 2s infinite linear; */
 
   @keyframes aa {
     from {
@@ -76,9 +76,25 @@ const Root = styled.div`
   }
 `;
 
-export default function Card({ width = 200, color = "green", number = 4 }) {
+export default function Card({
+  width = 200,
+  color = "green",
+  number = 4,
+  flip = false,
+  rotationY = 0,
+  layoutId,
+}) {
   return (
-    <Root width={width} color={color} className="noselect">
+    <Root
+      as={motion.div}
+      width={width}
+      color={color}
+      className="noselect"
+      layoutId={layoutId}
+      initial={{ rotateY: flip ? Math.abs(180 - rotationY) : rotationY }}
+      animate={{ rotateY: rotationY }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
+    >
       <div className="front">
         <Image src={`/assets/images/front-${color}.png`} ratio={590 / 418} />
         <p className="value">{number}</p>

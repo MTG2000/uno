@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Game from "./Components/Game/Game";
 const Root = styled.div`
   min-height: 100vh;
-  background: linear-gradient(152deg, #045850, #036a60 40%, #027059);
+  background: radial-gradient(#027059, #045850);
 `;
 
 function App() {
