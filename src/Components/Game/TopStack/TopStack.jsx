@@ -4,18 +4,17 @@ import CardsRow from "../CardsRow/CardsRow";
 
 const Root = styled.div`
   position: fixed;
-  bottom: -50px;
   left: 50%;
-  transform: translateX(-50%);
-  --cardWidth: var(--cardWidthBigger);
+  top: 0;
+  transform: translate(-50%, -50%);
 `;
 
-export default function PlayerStack() {
-  const player = useGameStore((state) => state.players[0]);
+export default function TopStack() {
+  const player = useGameStore((state) => state.players[2]);
   const cards = player?.cards || [];
   return (
     <Root>
-      <CardsRow cards={cards} cardProps={{ selectable: true }} />
+      <CardsRow cards={cards} startFlipped />
     </Root>
   );
 }

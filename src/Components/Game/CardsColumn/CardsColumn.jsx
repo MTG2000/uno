@@ -1,28 +1,22 @@
 import styled from "styled-components";
 import Card from "../../Shared/Card/Card";
-import { useGameStore } from "../../../stores/gameStore";
 
 const Root = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  --cardWidth: var(--cardWidthBigger);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 
   .card-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate(-50%, -50%);
+    &:not(:last-of-type) {
+      margin-bottom: calc(-1 * var(--cardWidth));
+    }
   }
 `;
 
-export default function TableStack() {
-  const tableStack = useGameStore((state) => state.tableStack);
-
+export default function CardsColumn({ cards }) {
   return (
-    <Root>
-      {tableStack.map((card) => (
+    <Root layout>
+      {cards.map((card) => (
         <div className="card-container" key={card.layoutId}>
           <Card
             layoutId={card.layoutId}
@@ -31,7 +25,7 @@ export default function TableStack() {
             action={card.action}
             width={200}
             flip={card.flip}
-            rotationY={0}
+            rotationY={card.rotationY}
           />
         </div>
       ))}

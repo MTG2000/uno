@@ -8,18 +8,13 @@ const Root = styled.div`
   /* overflow: hidden; */
   padding-top: 141%;
   border-radius: 10px;
+
+  border: 1px solid grey;
+  box-shadow: 0 0 10px #292727;
   position: relative;
   transform-style: preserve-3d;
-  /* animation: aa 2s infinite linear; */
 
-  @keyframes aa {
-    from {
-      transform: rotateY(0);
-    }
-    to {
-      transform: rotateY(360deg);
-    }
-  }
+  cursor: ${(props) => (props.selectable ? "pointer" : "initial")};
 
   .front,
   .back {
@@ -30,7 +25,7 @@ const Root = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-
+    overflow: hidden;
     backface-visibility: hidden;
   }
 
@@ -48,6 +43,14 @@ const Root = styled.div`
       font-weight: bold;
       text-shadow: 5px 5px black;
       -webkit-text-stroke: black 2px;
+    }
+
+    .card-icon {
+      width: 80%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .value-small {
@@ -69,6 +72,21 @@ const Root = styled.div`
         transform: scale(-1);
       }
     }
+
+    .icon-small {
+      position: absolute;
+      width: 20%;
+      &.icon-tl {
+        top: 25px;
+        left: 20px;
+      }
+
+      &.icon-br {
+        bottom: 25px;
+        right: 20px;
+        transform: scale(-1);
+      }
+    }
   }
 
   .back {
@@ -77,30 +95,84 @@ const Root = styled.div`
 `;
 
 export default function Card({
-  width = 200,
   color = "green",
-  number = 4,
+  digit = 4,
+  action = "",
   flip = false,
-  rotationY = 0,
+  rotationY = 180,
   layoutId,
+  selectable,
 }) {
+  const getFrontContent = () => {
+    console.log(color, action);
+
+    if (color === "black" && action === "wild")
+      return <Image src={`/assets/images/wild.png`} ratio={590 / 418} />;
+
+    if (color === "black")
+      return (
+        <>
+          <Image src={`/assets/images/front-${color}.png`} ratio={590 / 418} />
+          <img src="/assets/images/draw4.png" className="card-icon" />
+          <img
+            className="icon-small icon-tl"
+            src={`/assets/images/${action}-blank.png`}
+          />
+          <img
+            className="icon-small icon-br"
+            src={`/assets/images/${action}-blank.png`}
+          />
+        </>
+      );
+
+    if (action)
+      return (
+        <>
+          <Image src={`/assets/images/front-${color}.png`} ratio={590 / 418} />
+          <img
+            src={`/assets/images/${action}-${color}.png`}
+            className="card-icon"
+          />
+          <img
+            className="icon-small icon-tl"
+            src={`/assets/images/${action}-blank.png`}
+          />
+          <img
+            className="icon-small icon-br"
+            src={`/assets/images/${action}-blank.png`}
+          />
+        </>
+      );
+    return (
+      <>
+        <Image src={`/assets/images/front-${color}.png`} ratio={590 / 418} />
+        <p className="value">{digit}</p>
+        <p className="value-small value-tl">{digit}</p>
+        <p className="value-small value-br">{digit}</p>
+      </>
+    );
+  };
+
   return (
     <Root
       as={motion.div}
-      width={width}
       color={color}
       className="noselect"
       layoutId={layoutId}
-      initial={{ rotateY: flip ? Math.abs(180 - rotationY) : rotationY }}
-      animate={{ rotateY: rotationY }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
+      initial={{
+        rotateY: flip ? Math.abs(180 - rotationY) : rotationY,
+        y: 0,
+      }}
+      whileHover={
+        selectable
+          ? { y: -40, transition: { duration: 0.3 } }
+          : { y: 0, transition: { duration: 0.3 } }
+      }
+      animate={{ rotateY: rotationY, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      selectable={selectable}
     >
-      <div className="front">
-        <Image src={`/assets/images/front-${color}.png`} ratio={590 / 418} />
-        <p className="value">{number}</p>
-        <p className="value-small value-tl">{number}</p>
-        <p className="value-small value-br">{number}</p>
-      </div>
+      <div className="front">{getFrontContent()}</div>
       <div className="back">
         <Image src={`/assets/images/backside.png`} ratio={590 / 418} />
       </div>

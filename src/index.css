@@ -5,10 +5,13 @@
 }
 
 :root {
-  --red: #f83434;
-  --yellow: #f9f618;
-  --green: #1fe544;
-  --blue: #3446f8;
+  --red: hsl(0, 93%, 59%);
+  --yellow: hsl(55, 93%, 59%);
+  --green: hsl(122, 93%, 59%);
+  --blue: hsl(224, 93%, 59%);
+
+  --cardWidth: 150px;
+  --cardWidthBigger: 200px;
 }
 
 body {
@@ -33,4 +36,9 @@ code {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
+}
+
+.card-container {
+  perspective: 800px;
+  width: var(--cardWidth);
 }
