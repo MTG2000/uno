@@ -1,14 +1,18 @@
 import create from "zustand";
+import { canPlayCard } from "../BotsServer/BotsServer";
+import { wrapMod } from "../utils/helpers";
 
-interface Player {
+export interface Player {
   id: string;
   name: string;
   avatar: string;
   cards: Card[];
+  isBot?: boolean;
 }
 
-interface Card {
-  layoutId: string;
+export interface Card {
+  id?: string;
+  layoutId?: string;
   digit?: number;
   color?: "red" | "blue" | "green" | "yellow" | "black";
   action?: "reverse" | "skip" | "draw two" | "draw four" | "wild";
@@ -20,16 +24,23 @@ interface Card {
 interface StoreState {
   playerId: string;
   currentPlayer: number;
-  direction: 1 | -1;
+  direction: number;
   tableStack: Card[];
+  drawingStack: Card[];
   players: Player[];
 
   setPlayerId(playerId: string): void;
   init(players: Player[], startingCards: Card[]): void;
-  move(card: Card): void;
+  move(card?: Card, draw?: number, cardsToDraw?: Card[]): void;
 }
 
 let cardLayoutIdIdx = 111;
+
+function generateDrawingCards(cnt: number) {
+  return Array(cnt)
+    .fill(0)
+    .map((i) => ({ layoutId: `id_${cardLayoutIdIdx++}` }));
+}
 
 export const useGameStore = create<StoreState>((set, get) => ({
   //   bears: 0,
@@ -40,6 +51,7 @@ export const useGameStore = create<StoreState>((set, get) => ({
   direction: 1,
   tableStack: [],
   players: [],
+  drawingStack: [],
 
   setPlayerId: (playerId: string) => set({ playerId }),
 
@@ -56,7 +68,7 @@ export const useGameStore = create<StoreState>((set, get) => ({
     for (let i = myIdx; i < players.length; i++) {
       playersFinal.push(players[i]);
     }
-    set({ currentPlayer: playersFinal.length });
+    set({ currentPlayer: playersFinal.length % players.length });
     for (let i = 0; i < myIdx; i++) {
       playersFinal.push(players[i]);
     }
@@ -68,6 +80,7 @@ export const useGameStore = create<StoreState>((set, get) => ({
       rotationY: 0,
       playable: myIdx === 0,
     }));
+
     for (let i = 1; i < playersFinal.length; i++) {
       playersFinal[i].cards = Array(startingCards.length)
         .fill(0)
@@ -75,63 +88,125 @@ export const useGameStore = create<StoreState>((set, get) => ({
           return { layoutId: `id_${cardLayoutIdIdx++}` };
         });
     }
+
+    set({
+      drawingStack: generateDrawingCards(20),
+    });
     set({ players: playersFinal });
   },
 
-  move: (card: Card) => {
+  move: (card?: Card, draw?: number, cardsToDraw?: Card[]) => {
     const curPlayerObj = get().players[get().currentPlayer];
-    set((state) => ({
-      currentPlayer: (state.currentPlayer + 1) % state.players.length,
-    }));
-    let layoutId = card.layoutId;
-    let shouldFlip = false;
-    if (curPlayerObj.id !== get().playerId) {
-      layoutId =
-        curPlayerObj.cards[
-          Math.floor(Math.random() * curPlayerObj.cards.length)
-        ].layoutId;
-      shouldFlip = true;
-    } else {
-      layoutId =
-        curPlayerObj.cards[
-          Math.floor(Math.random() * curPlayerObj.cards.length)
-        ].layoutId;
-      const cardToMove = curPlayerObj.cards.filter(
-        (c) => c.layoutId === layoutId
-      )[0];
-      card.color = cardToMove.color;
-      card.action = cardToMove.action;
-      card.digit = cardToMove.digit;
+
+    if (card?.action === "skip")
+      set((state) => ({
+        currentPlayer: wrapMod(
+          state.currentPlayer + state.direction * 2,
+          state.players.length
+        ),
+      }));
+    else if (card?.action === "reverse")
+      set((state) => ({
+        currentPlayer: wrapMod(
+          state.currentPlayer - 1 * state.direction,
+          state.players.length
+        ),
+        direction: -1 * state.direction,
+      }));
+    else if (card?.action === "wild")
+      set((state) => ({
+        currentPlayer: state.currentPlayer,
+      }));
+    else
+      set((state) => ({
+        currentPlayer: wrapMod(
+          state.currentPlayer + state.direction,
+          state.players.length
+        ),
+      }));
+
+    if (draw) {
+      set((state) => ({
+        players: state.players.map((p) => {
+          if (p.id === curPlayerObj.id) {
+            let newCards = get().drawingStack.slice(0, draw);
+            if (curPlayerObj.id === get().playerId && cardsToDraw) {
+              newCards = newCards.map((c, idx) => ({
+                ...c,
+                ...cardsToDraw[idx],
+                rotationY: 0,
+              }));
+            }
+            return {
+              ...p,
+              cards: p.cards.concat(newCards),
+            };
+          }
+          return p;
+        }),
+        drawingStack: get()
+          .drawingStack.slice(draw)
+          .concat(generateDrawingCards(draw)),
+      }));
     }
 
+    if (card) {
+      let layoutId = card.layoutId;
+      let shouldFlip = false;
+      if (curPlayerObj.id !== get().playerId) {
+        layoutId =
+          curPlayerObj.cards[
+            Math.floor(Math.random() * curPlayerObj.cards.length)
+          ].layoutId;
+        shouldFlip = true;
+      } else {
+        const cardToMove = curPlayerObj.cards.filter(
+          (c) => c.layoutId === layoutId
+        )[0];
+
+        card.color = cardToMove.color;
+        card.action = cardToMove.action;
+        card.digit = cardToMove.digit;
+      }
+
+      set((state) => ({
+        tableStack: [
+          ...state.tableStack,
+          {
+            layoutId,
+            color: card.color,
+            action: card.action,
+            digit: card.digit,
+            flip: shouldFlip,
+            rotationY: 0,
+          },
+        ],
+        players: state.players.map((p) => {
+          if (p === curPlayerObj) {
+            return {
+              ...p,
+              cards: p.cards.filter((c) => c.layoutId !== layoutId),
+            };
+          }
+          return p;
+        }),
+      }));
+    }
     set((state) => ({
-      tableStack: [
-        ...state.tableStack,
-        {
-          layoutId,
-          color: card.color,
-          action: card.action,
-          digit: card.digit,
-          flip: shouldFlip,
-          rotationY: 0,
-        },
-      ],
       players: state.players.map((p) => {
         if (p.id === get().playerId) {
           const myTurn = get().currentPlayer === 0;
+
           return {
             ...p,
-            cards: p.cards
-              .filter((c) => c.layoutId !== layoutId)
-              .map((c) => ({
+            cards: p.cards.map((c) => {
+              return {
                 ...c,
-                playable: myTurn && canPlayCard(card, c),
-              })),
-          };
-        } else if (p === curPlayerObj) {
-          return {
-            ...p,
-            cards: p.cards.filter((c) => c.layoutId !== layoutId),
+                playable:
+                  myTurn &&
+                  canPlayCard(get().tableStack[get().tableStack.length - 1], c),
+              };
+            }),
           };
         }
         return p;
@@ -139,17 +214,3 @@ export const useGameStore = create<StoreState>((set, get) => ({
     }));
   },
 }));
-
-function canPlayCard(oldCard: Card, newCard: Card) {
-  if (oldCard.color === newCard.color) return true;
-  if (oldCard.digit !== undefined && oldCard.digit === newCard.digit)
-    return true;
-  if (
-    oldCard.action &&
-    oldCard.action?.indexOf("draw") !== -1 &&
-    newCard.action?.indexOf("draw") !== -1
-  )
-    return true;
-
-  return false;
-}

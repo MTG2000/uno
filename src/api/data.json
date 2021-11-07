@@ -1,542 +1,542 @@
 {
     "cards": [
         {
-            "id": 1,
+            "id": "1",
             "digit": 0,
             "color": "red"
         },
         {
-            "id": 2,
+            "id": "2",
             "digit": 1,
             "color": "red"
         },
         {
-            "id": 3,
+            "id": "3",
             "digit": 1,
             "color": "red"
         },
         {
-            "id": 4,
+            "id": "4",
             "digit": 2,
             "color": "red"
         },
         {
-            "id": 5,
+            "id": " 5",
             "digit": 2,
             "color": "red"
         },
         {
-            "id": 6,
+            "id": " 6",
             "digit": 3,
             "color": "red"
         },
         {
-            "id": 7,
+            "id": " 7",
             "digit": 3,
             "color": "red"
         },
         {
-            "id": 8,
+            "id": " 8",
             "digit": 4,
             "color": "red"
         },
         {
-            "id": 9,
+            "id": " 9",
             "digit": 4,
             "color": "red"
         },
         {
-            "id": 10,
+            "id": " 10",
             "digit": 5,
             "color": "red"
         },
         {
-            "id": 11,
+            "id": " 11",
             "digit": 5,
             "color": "red"
         },
         {
-            "id": 12,
+            "id": "12",
             "digit": 6,
             "color": "red"
         },
         {
-            "id": 13,
+            "id": "13",
             "digit": 6,
             "color": "red"
         },
         {
-            "id": 14,
+            "id": "14",
             "digit": 7,
             "color": "red"
         },
         {
-            "id": 15,
+            "id": "15",
             "digit": 7,
             "color": "red"
         },
         {
-            "id": 16,
+            "id": "16",
             "digit": 8,
             "color": "red"
         },
         {
-            "id": 17,
+            "id": "17",
             "digit": 8,
             "color": "red"
         },
         {
-            "id": 18,
+            "id": "18",
             "digit": 9,
             "color": "red"
         },
         {
-            "id": 19,
+            "id": "19",
             "digit": 9,
             "color": "red"
         },
         {
-            "id": 20,
+            "id": "20",
             "color": "red",
             "action": "skip"
         },
         {
-            "id": 21,
+            "id": "21",
             "color": "red",
             "action": "reverse"
         },
         {
-            "id": 22,
+            "id": "22",
             "color": "red",
             "action": "draw two"
         },
         {
-            "id": 23,
+            "id": "23",
             "color": "red",
             "action": "skip"
         },
         {
-            "id": 24,
+            "id": "24",
             "color": "red",
             "action": "reverse"
         },
         {
-            "id": 25,
+            "id": "25",
             "color": "red",
             "action": "draw two"
         },
         {
-            "id": 26,
+            "id": "26",
             "digit": 0,
             "color": "green"
         },
         {
-            "id": 27,
+            "id": "27",
             "digit": 1,
             "color": "green"
         },
         {
-            "id": 28,
+            "id": "28",
             "digit": 1,
             "color": "green"
         },
         {
-            "id": 29,
+            "id": "29",
             "digit": 2,
             "color": "green"
         },
         {
-            "id": 30,
+            "id": "30",
             "digit": 2,
             "color": "green"
         },
         {
-            "id": 31,
+            "id": "31",
             "digit": 3,
             "color": "green"
         },
         {
-            "id": 32,
+            "id": "32",
             "digit": 3,
             "color": "green"
         },
         {
-            "id": 33,
+            "id": "33",
             "digit": 4,
             "color": "green"
         },
         {
-            "id": 34,
+            "id": "34",
             "digit": 4,
             "color": "green"
         },
         {
-            "id": 35,
+            "id": "35",
             "digit": 5,
             "color": "green"
         },
         {
-            "id": 36,
+            "id": "36",
             "digit": 5,
             "color": "green"
         },
         {
-            "id": 37,
+            "id": "37",
             "digit": 6,
             "color": "green"
         },
         {
-            "id": 38,
+            "id": "38",
             "digit": 6,
             "color": "green"
         },
         {
-            "id": 39,
+            "id": "39",
             "digit": 7,
             "color": "green"
         },
         {
-            "id": 40,
+            "id": "40",
             "digit": 7,
             "color": "green"
         },
         {
-            "id": 41,
+            "id": "41",
             "digit": 8,
             "color": "green"
         },
         {
-            "id": 42,
+            "id": "42",
             "digit": 8,
             "color": "green"
         },
         {
-            "id": 43,
+            "id": "43",
             "digit": 9,
             "color": "green"
         },
         {
-            "id": 44,
+            "id": "44",
             "digit": 9,
             "color": "green"
         },
         {
-            "id": 45,
+            "id": "45",
             "color": "green",
             "action": "skip"
         },
         {
-            "id": 46,
+            "id": "46",
             "color": "green",
             "action": "reverse"
         },
         {
-            "id": 47,
+            "id": "47",
             "color": "green",
             "action": "draw two"
         },
         {
-            "id": 48,
+            "id": "48",
             "color": "green",
             "action": "skip"
         },
         {
-            "id": 49,
+            "id": "49",
             "color": "green",
             "action": "reverse"
         },
         {
-            "id": 50,
+            "id": "50",
             "color": "green",
             "action": "draw two"
         },
         {
-            "id": 51,
+            "id": "51",
             "digit": 0,
             "color": "blue"
         },
         {
-            "id": 52,
+            "id": "52",
             "digit": 1,
             "color": "blue"
         },
         {
-            "id": 53,
+            "id": "53",
             "digit": 1,
             "color": "blue"
         },
         {
-            "id": 54,
+            "id": "54",
             "digit": 2,
             "color": "blue"
         },
         {
-            "id": 55,
+            "id": "55",
             "digit": 2,
             "color": "blue"
         },
         {
-            "id": 56,
+            "id": "56",
             "digit": 3,
             "color": "blue"
         },
         {
-            "id": 57,
+            "id": "57",
             "digit": 3,
             "color": "blue"
         },
         {
-            "id": 58,
+            "id": "58",
             "digit": 4,
             "color": "blue"
         },
         {
-            "id": 59,
+            "id": "59",
             "digit": 4,
             "color": "blue"
         },
         {
-            "id": 60,
+            "id": "60",
             "digit": 5,
             "color": "blue"
         },
         {
-            "id": 61,
+            "id": "61",
             "digit": 5,
             "color": "blue"
         },
         {
-            "id": 62,
+            "id": "62",
             "digit": 6,
             "color": "blue"
         },
         {
-            "id": 63,
+            "id": "63",
             "digit": 6,
             "color": "blue"
         },
         {
-            "id": 64,
+            "id": "64",
             "digit": 7,
             "color": "blue"
         },
         {
-            "id": 65,
+            "id": "65",
             "digit": 7,
             "color": "blue"
         },
         {
-            "id": 66,
+            "id": "66",
             "digit": 8,
             "color": "blue"
         },
         {
-            "id": 67,
+            "id": "67",
             "digit": 8,
             "color": "blue"
         },
         {
-            "id": 68,
+            "id": "68",
             "digit": 9,
             "color": "blue"
         },
         {
-            "id": 69,
+            "id": "69",
             "digit": 9,
             "color": "blue"
         },
         {
-            "id": 70,
+            "id": "70",
             "color": "blue",
             "action": "skip"
         },
         {
-            "id": 71,
+            "id": "71",
             "color": "blue",
             "action": "reverse"
         },
         {
-            "id": 72,
+            "id": "72",
             "color": "blue",
             "action": "draw two"
         },
         {
-            "id": 73,
+            "id": "73",
             "color": "blue",
             "action": "skip"
         },
         {
-            "id": 74,
+            "id": "74",
             "color": "blue",
             "action": "reverse"
         },
         {
-            "id": 75,
+            "id": "75",
             "color": "blue",
             "action": "draw two"
         },
         {
-            "id": 76,
+            "id": "76",
             "digit": 0,
             "color": "yellow"
         },
         {
-            "id": 77,
+            "id": "77",
             "digit": 1,
             "color": "yellow"
         },
         {
-            "id": 78,
+            "id": "78",
             "digit": 1,
             "color": "yellow"
         },
         {
-            "id": 79,
+            "id": "79",
             "digit": 2,
             "color": "yellow"
         },
         {
-            "id": 80,
+            "id": "80",
             "digit": 2,
             "color": "yellow"
         },
         {
-            "id": 81,
+            "id": "81",
             "digit": 3,
             "color": "yellow"
         },
         {
-            "id": 82,
+            "id": "82",
             "digit": 3,
             "color": "yellow"
         },
         {
-            "id": 83,
+            "id": "83",
             "digit": 4,
             "color": "yellow"
         },
         {
-            "id": 84,
+            "id": "84",
             "digit": 4,
             "color": "yellow"
         },
         {
-            "id": 85,
+            "id": "85",
             "digit": 5,
             "color": "yellow"
         },
         {
-            "id": 86,
+            "id": "86",
             "digit": 5,
             "color": "yellow"
         },
         {
-            "id": 87,
+            "id": "87",
             "digit": 6,
             "color": "yellow"
         },
         {
-            "id": 88,
+            "id": "88",
             "digit": 6,
             "color": "yellow"
         },
         {
-            "id": 89,
+            "id": "89",
             "digit": 7,
             "color": "yellow"
         },
         {
-            "id": 90,
+            "id": "90",
             "digit": 7,
             "color": "yellow"
         },
         {
-            "id": 91,
+            "id": "91",
             "digit": 8,
             "color": "yellow"
         },
         {
-            "id": 92,
+            "id": "92",
             "digit": 8,
             "color": "yellow"
         },
         {
-            "id": 93,
+            "id": "93",
             "digit": 9,
             "color": "yellow"
         },
         {
-            "id": 94,
+            "id": "94",
             "digit": 9,
             "color": "yellow"
         },
         {
-            "id": 95,
+            "id": "95",
             "color": "yellow",
             "action": "skip"
         },
         {
-            "id": 96,
+            "id": "96",
             "color": "yellow",
             "action": "reverse"
         },
         {
-            "id": 97,
+            "id": "97",
             "color": "yellow",
             "action": "draw two"
         },
         {
-            "id": 98,
+            "id": "98",
             "color": "yellow",
             "action": "skip"
         },
         {
-            "id": 99,
+            "id": "99",
             "color": "yellow",
             "action": "reverse"
         },
         {
-            "id": 100,
+            "id": "100",
             "color": "yellow",
             "action": "draw two"
         },
         {
-            "id": 101,
+            "id": "101",
             "color": "black",
             "action": "draw four"
         },
         {
-            "id": 102,
+            "id": "102",
             "color": "black",
             "action": "draw four"
         },
         {
-            "id": 103,
+            "id": "103",
             "color": "black",
             "action": "draw four"
         },
         {
-            "id": 104,
+            "id": "104",
             "color": "black",
             "action": "draw four"
         },
         {
-            "id": 105,
+            "id": "105",
             "color": "black",
             "action": "wild"
         },
         {
-            "id": 106,
+            "id": "106",
             "color": "black",
             "action": "wild"
         },
         {
-            "id": 107,
+            "id": "107",
             "color": "black",
             "action": "wild"
         },
         {
-            "id": 108,
+            "id": "108",
             "color": "black",
             "action": "wild"
         }

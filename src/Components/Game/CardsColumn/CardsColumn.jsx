@@ -6,16 +6,24 @@ const Root = styled.div`
   justify-content: center;
   flex-direction: column;
 
+  --cardHeight: calc(1.41 * var(--cardWidth));
+  --cardsCnt: ${(props) => props.cardsCnt};
+  --containerMaxHeight: 50vh;
   .card-container {
     &:not(:last-of-type) {
-      margin-bottom: calc(-1 * var(--cardWidth));
+      margin-bottom: calc(
+        -1 * max(calc((
+                  var(--cardHeight) * var(--cardsCnt) -
+                    var(--containerMaxHeight)
+                ) / (var(--cardsCnt)-1)), calc(var(--cardHeight) / 2))
+      );
     }
   }
 `;
 
 export default function CardsColumn({ cards }) {
   return (
-    <Root layout>
+    <Root layout cardsCnt={cards.length}>
       {cards.map((card) => (
         <div className="card-container" key={card.layoutId}>
           <Card

@@ -31,7 +31,7 @@ export default function TableStack() {
             action={card.action}
             width={200}
             flip={card.flip}
-            rotationY={0}
+            rotationY={card.rotationY}
           />
         </div>
       ))}

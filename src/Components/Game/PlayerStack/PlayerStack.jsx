@@ -13,6 +13,8 @@ const Root = styled.div`
 export default function PlayerStack() {
   const player = useGameStore((state) => state.players[0]);
   const cards = player?.cards || [];
+  console.log(cards);
+
   return (
     <Root>
       <CardsRow cards={cards} cardProps={{ selectable: true }} />
