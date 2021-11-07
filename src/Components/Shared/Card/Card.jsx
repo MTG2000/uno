@@ -8,14 +8,15 @@ const Root = styled.div`
 
   /* overflow: hidden; */
   padding-top: 141%;
-  border-radius: 10px;
+  border-radius: 15px;
 
-  border: 1px solid grey;
   box-shadow: 0 0 10px #292727;
   position: relative;
   transform-style: preserve-3d;
 
-  cursor: ${(props) => (props.selectable ? "pointer" : "initial")};
+  cursor: ${(props) => (props.playable ? "pointer" : "auto")};
+  filter: ${(props) =>
+    props.selectable && !props.playable ? "contrast(.5)" : "none"};
 
   .front,
   .back {
@@ -104,6 +105,7 @@ export default function Card({
   rotationY = 180,
   layoutId,
   selectable,
+  playable,
 }) {
   const getFrontContent = () => {
     if (color === "black" && action === "wild")
@@ -164,15 +166,16 @@ export default function Card({
         y: 0,
       }}
       whileHover={
-        selectable
+        playable
           ? { y: -40, transition: { duration: 0.3 } }
           : { y: 0, transition: { duration: 0.3 } }
       }
       animate={{ rotateY: rotationY, y: 0 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
       selectable={selectable}
+      playable={playable}
       onClick={
-        selectable
+        playable
           ? () => BotsServer.move(false, { id, color, action, digit, layoutId })
           : undefined
       }

@@ -10,11 +10,14 @@ const Root = styled.div`
 `;
 
 export default function TopStack() {
-  const player = useGameStore((state) => state.players[2]);
+  const { player, currentPlayer } = useGameStore((state) => ({
+    player: state.players[2],
+    currentPlayer: state.currentPlayer,
+  }));
   const cards = player?.cards || [];
   return (
     <Root>
-      <CardsRow cards={cards} startFlipped />
+      <CardsRow cards={cards} highlight={currentPlayer === 2} />
     </Root>
   );
 }

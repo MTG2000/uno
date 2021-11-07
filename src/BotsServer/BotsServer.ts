@@ -155,33 +155,27 @@ export function canPlayCard(
   newCard: Card,
   lastPlayerDrawed?: boolean
 ) {
+  const isOldDawingCard =
+    oldCard?.action && oldCard.action.indexOf("draw") !== -1;
+  const haveToDraw = isOldDawingCard && !lastPlayerDrawed;
+  const isNewDawingCard =
+    newCard?.action && newCard.action.indexOf("draw") !== -1;
+
+  console.log(isOldDawingCard, haveToDraw, isNewDawingCard);
+
   //No Card Played Yet
   if (!oldCard) return true;
 
-  //   Old card is wild
-  if (oldCard.action === "wild" || newCard.color === "black") return true;
+  if (!haveToDraw && newCard.action === "wild") return true;
 
-  if (oldCard.action === "draw four" && lastPlayerDrawed) return true;
+  if (newCard.action === "draw four") return true;
 
-  // Old Card is Drawing Card and New Card is Drawing
-  if (
-    oldCard.action &&
-    oldCard.action.indexOf("draw") !== -1 &&
-    newCard.action &&
-    newCard.action.indexOf("draw") !== -1
-  )
-    return true;
+  if (oldCard.color === "black" && !haveToDraw) return true;
 
-  //   Same Colors But old is not draw
-  if (
-    (!oldCard.action ||
-      (oldCard.action && oldCard.action.indexOf("draw") === -1) ||
-      lastPlayerDrawed) &&
-    oldCard.color === newCard.color
-  )
-    return true;
+  if (haveToDraw && isNewDawingCard) return true;
 
-  //   Same Digit
+  if (!haveToDraw && oldCard.color === newCard.color) return true;
+
   if (oldCard.digit !== undefined && oldCard.digit === newCard.digit)
     return true;
 

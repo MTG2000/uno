@@ -10,11 +10,14 @@ const Root = styled.div`
 `;
 
 export default function LeftStack() {
-  const player = useGameStore((state) => state.players[1]);
+  const { player, currentPlayer } = useGameStore((state) => ({
+    player: state.players[1],
+    currentPlayer: state.currentPlayer,
+  }));
   const cards = player?.cards || [];
   return (
     <Root>
-      <CardsColumn cards={cards} />
+      <CardsColumn cards={cards} highlight={currentPlayer === 1} />
     </Root>
   );
 }

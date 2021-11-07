@@ -28,6 +28,7 @@ interface StoreState {
   tableStack: Card[];
   drawingStack: Card[];
   players: Player[];
+  lastPlayerDrawed: boolean;
 
   setPlayerId(playerId: string): void;
   init(players: Player[], startingCards: Card[]): void;
@@ -52,11 +53,12 @@ export const useGameStore = create<StoreState>((set, get) => ({
   tableStack: [],
   players: [],
   drawingStack: [],
+  lastPlayerDrawed: false,
 
   setPlayerId: (playerId: string) => set({ playerId }),
 
   init: (players: Player[], startingCards: Card[]) => {
-    set({ tableStack: [], direction: 1 });
+    set({ tableStack: [], direction: 1, lastPlayerDrawed: false });
 
     // Find my player and re-order
     let playersFinal: Player[] = [];
@@ -147,6 +149,7 @@ export const useGameStore = create<StoreState>((set, get) => ({
         drawingStack: get()
           .drawingStack.slice(draw)
           .concat(generateDrawingCards(draw)),
+        lastPlayerDrawed: true,
       }));
     }
 
@@ -190,6 +193,7 @@ export const useGameStore = create<StoreState>((set, get) => ({
           }
           return p;
         }),
+        lastPlayerDrawed: false,
       }));
     }
     set((state) => ({
@@ -204,7 +208,11 @@ export const useGameStore = create<StoreState>((set, get) => ({
                 ...c,
                 playable:
                   myTurn &&
-                  canPlayCard(get().tableStack[get().tableStack.length - 1], c),
+                  canPlayCard(
+                    get().tableStack[get().tableStack.length - 1],
+                    c,
+                    get().lastPlayerDrawed
+                  ),
               };
             }),
           };

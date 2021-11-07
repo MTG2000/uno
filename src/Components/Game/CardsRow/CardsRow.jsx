@@ -5,8 +5,10 @@ const Root = styled.div`
   display: flex;
   justify-content: center;
 
+  filter: ${(props) => (props.highlight ? "none" : "brightness(0.6)")};
+
   --cardsCnt: ${(props) => props.cardsCnt};
-  --containerMaxWidth: 70vw;
+  --containerMaxWidth: 55vw;
   .card-container {
     &:not(:last-of-type) {
       margin-right: calc(
@@ -18,9 +20,9 @@ const Root = styled.div`
   }
 `;
 
-export default function CardsRow({ cards, cardProps }) {
+export default function CardsRow({ cards, cardProps, highlight }) {
   return (
-    <Root layout cardsCnt={cards.length}>
+    <Root layout cardsCnt={cards.length} highlight={highlight}>
       {cards.map((card) => (
         <div className="card-container" key={card.layoutId}>
           <Card
@@ -30,9 +32,10 @@ export default function CardsRow({ cards, cardProps }) {
             digit={card.digit}
             action={card.action}
             width={200}
-            flip={true}
+            flip={card.flip}
             rotationY={card.rotationY}
-            selectable={cardProps?.selectable && card.playable}
+            selectable={cardProps?.selectable}
+            playable={card.playable}
           />
         </div>
       ))}

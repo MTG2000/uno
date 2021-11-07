@@ -2,13 +2,21 @@ import styled from "styled-components";
 import Card from "../../Shared/Card/Card";
 import { useGameStore } from "../../../stores/gameStore";
 import BotsServer from "../../../BotsServer/BotsServer";
+import { useCallback, useMemo } from "react";
+import FrontCards from "./FrontCards";
 
 const Root = styled.div`
   --cardWidth: var(--cardWidthBigger);
 
   position: fixed;
   bottom: -50px;
-  left: -20px;
+  left: 40px;
+  width: var(--cardWidth);
+  height: calc(var(--cardWidth) * 1.41);
+  z-index: 10;
+
+  cursor: ${(props) => (props.playable ? "pointer" : "initial")};
+  filter: ${(props) => (!props.playable ? "contrast(.5)" : "none")};
 
   .card-container {
     position: absolute;
@@ -28,14 +36,7 @@ export default function DrawingStack() {
   };
 
   return (
-    <Root onClick={handleClick}>
-      {Array(5)
-        .fill(0)
-        .map((_, idx) => (
-          <div className="card-container" key={idx}>
-            <Card />
-          </div>
-        ))}
+    <Root onClick={handleClick} playable={currentPlayer === 0}>
       {drawingStack.map((card) => (
         <div className="card-container" key={card.layoutId}>
           <Card
@@ -47,6 +48,7 @@ export default function DrawingStack() {
           />
         </div>
       ))}
+      <FrontCards />
     </Root>
   );
 }

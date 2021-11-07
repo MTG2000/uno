@@ -5,6 +5,7 @@ const Root = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  filter: ${(props) => (props.highlight ? "none" : "brightness(0.6)")};
 
   --cardHeight: calc(1.41 * var(--cardWidth));
   --cardsCnt: ${(props) => props.cardsCnt};
@@ -21,9 +22,9 @@ const Root = styled.div`
   }
 `;
 
-export default function CardsColumn({ cards }) {
+export default function CardsColumn({ cards, highlight }) {
   return (
-    <Root layout cardsCnt={cards.length}>
+    <Root layout cardsCnt={cards.length} highlight={highlight}>
       {cards.map((card) => (
         <div className="card-container" key={card.layoutId}>
           <Card
