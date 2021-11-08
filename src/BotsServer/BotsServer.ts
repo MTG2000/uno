@@ -75,6 +75,9 @@ class _BotsServer extends EventsObject {
       curPlayer: 0,
     };
 
+    if (card && !canPlayCard(this.tableStk[0], card, this.lastPlayerDrawed))
+      return false;
+
     if (draw) {
       let drawCnt = 3;
       if (this.sumDrawing) {
@@ -97,32 +100,28 @@ class _BotsServer extends EventsObject {
       this.lastPlayerDrawed = true;
     }
 
-    if (card && !canPlayCard(this.tableStk[0], card, this.lastPlayerDrawed))
-      return false;
+    let nxtPlayer = this.curPlayer;
 
     if (card?.action === "reverse") this.direction *= -1;
 
-    let nxtPlayer = this.curPlayer;
     //Move to next player ( if not wild card )
     if (card?.action === "skip")
       nxtPlayer = wrapMod(
         this.curPlayer + 2 * this.direction,
         this.players.length
       );
-    else if (card?.action !== "wild") {
+    else if (card?.action !== "wild")
       nxtPlayer = wrapMod(
         this.curPlayer + 1 * this.direction,
         this.players.length
       );
-      console.log("Updated %d", this.curPlayer);
-    }
 
     moveEventObj.curPlayer = nxtPlayer;
 
-    if (card?.action === "draw two") this.sumDrawing += 2;
-    if (card?.action === "draw four") this.sumDrawing += 4;
-
     if (card) {
+      if (card.action === "draw two") this.sumDrawing += 2;
+      if (card.action === "draw four") this.sumDrawing += 4;
+
       this.tableStk.unshift(card);
       moveEventObj.card = card;
       this.players[this.curPlayer].cards = this.players[
@@ -160,8 +159,6 @@ export function canPlayCard(
   const haveToDraw = isOldDawingCard && !lastPlayerDrawed;
   const isNewDawingCard =
     newCard?.action && newCard.action.indexOf("draw") !== -1;
-
-  console.log(isOldDawingCard, haveToDraw, isNewDawingCard);
 
   //No Card Played Yet
   if (!oldCard) return true;

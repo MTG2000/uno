@@ -9,7 +9,7 @@ const Root = styled.div`
   --cardWidth: var(--cardWidthBigger);
 
   position: fixed;
-  bottom: -50px;
+  bottom: calc(-1 * var(--cardWidth) / 2);
   left: 40px;
   width: var(--cardWidth);
   height: calc(var(--cardWidth) * 1.41);

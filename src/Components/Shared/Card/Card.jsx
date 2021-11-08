@@ -14,7 +14,7 @@ const Root = styled.div`
   position: relative;
   transform-style: preserve-3d;
 
-  cursor: ${(props) => (props.playable ? "pointer" : "auto")};
+  cursor: ${(props) => (props.playable ? "pointer" : "inherit")};
   filter: ${(props) =>
     props.selectable && !props.playable ? "contrast(.5)" : "none"};
 

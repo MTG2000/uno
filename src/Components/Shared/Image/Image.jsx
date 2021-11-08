@@ -11,6 +11,7 @@ const Root = styled.div`
     top: 0;
     left: 0;
     object-fit: cover;
+    cursor: inherit;
   }
 `;
 

@@ -44,9 +44,6 @@ function generateDrawingCards(cnt: number) {
 }
 
 export const useGameStore = create<StoreState>((set, get) => ({
-  //   bears: 0,
-  //   increasePopulation: () => set(state => ({ bears: state.bears + 1 })),
-  //   removeAllBears: () => set({ bears: 0 })
   playerId: "",
   currentPlayer: 0,
   direction: 1,
@@ -174,7 +171,7 @@ export const useGameStore = create<StoreState>((set, get) => ({
 
       set((state) => ({
         tableStack: [
-          ...state.tableStack,
+          ...state.tableStack.slice(-1),
           {
             layoutId,
             color: card.color,
