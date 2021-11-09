@@ -1,18 +1,19 @@
 import { AnimateSharedLayout } from "framer-motion";
 import TableStack from "./TableStack/TableStack.jsx";
 import PlayerStack from "./PlayerStack/PlayerStack.jsx";
-import { Card, Player, useGameStore } from "../../stores/gameStore";
+import { useGameStore } from "../../stores/gameStore";
+
 import { useEffect } from "react";
 import LeftStack from "./LeftStack/LeftStack.jsx";
 import RightStack from "./RightStack/RightStack.jsx";
 import TopStack from "./TopStack/TopStack.jsx";
 import data from "../../api/data.json";
-import { shuffle } from "../../utils/helpers.js";
 import BotsServer, {
   IMoveEvent,
   IStartEvent,
 } from "../../BotsServer/BotsServer";
 import DrawingStack from "./DrawingStack/DrawingStack.jsx";
+import { Player } from "../../utils/interfaces.js";
 
 export default function Game() {
   const { init, setPlayerId, move } = useGameStore();
@@ -29,12 +30,14 @@ export default function Game() {
 
     BotsServer.addEventListener(
       "move",
-      ({ card, draw, cardsToDraw }: IMoveEvent) => {
-        move(card, draw, cardsToDraw);
+      ({ card, draw, cardsToDraw, nxtPlayer }: IMoveEvent) => {
+        // console.log("MOVE EVENT: ", card, draw, nxtPlayer);
+
+        move(nxtPlayer, card, draw, cardsToDraw);
       }
     );
     setPlayerId(BotsServer.joinPlayer(data.players[3] as Player));
-  }, [init]);
+  }, [init, move, setPlayerId]);
 
   return (
     <div>
@@ -43,8 +46,8 @@ export default function Game() {
         <TopStack />
         <LeftStack />
         <RightStack />
-        <DrawingStack />
         <PlayerStack />
+        <DrawingStack />
       </AnimateSharedLayout>
     </div>
   );

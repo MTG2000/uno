@@ -5,7 +5,8 @@ const Root = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  filter: ${(props) => (props.highlight ? "none" : "brightness(0.6)")};
+  filter: ${(props) =>
+    props.highlight ? "drop-shadow(0 0 10px white)" : "brightness(0.6)"};
 
   --cardHeight: calc(1.41 * var(--cardWidth));
   --cardsCnt: ${(props) => props.cardsCnt};

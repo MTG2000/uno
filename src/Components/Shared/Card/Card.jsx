@@ -10,7 +10,8 @@ const Root = styled.div`
   padding-top: 141%;
   border-radius: 15px;
 
-  box-shadow: 0 0 10px #292727;
+  box-shadow: ${(props) =>
+    !props.disableShadow ? "0 0 10px #292727" : "none"};
   position: relative;
   transform-style: preserve-3d;
 
@@ -106,6 +107,7 @@ export default function Card({
   layoutId,
   selectable,
   playable,
+  disableShadow = false,
 }) {
   const getFrontContent = () => {
     if (color === "black" && action === "wild")
@@ -174,6 +176,7 @@ export default function Card({
       transition={{ duration: 0.5, ease: "easeInOut" }}
       selectable={selectable}
       playable={playable}
+      disableShadow={disableShadow}
       onClick={
         playable
           ? () => BotsServer.move(false, { id, color, action, digit, layoutId })

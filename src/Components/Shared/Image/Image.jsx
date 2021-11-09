@@ -15,7 +15,7 @@ const Root = styled.div`
   }
 `;
 
-export default function Image({ src, alt = "", ratio = 9 / 16, ...props }) {
+export default function Image({ src, alt = " ", ratio = 9 / 16, ...props }) {
   return (
     <Root ratio={ratio} {...props}>
       <img src={src} alt={alt} />

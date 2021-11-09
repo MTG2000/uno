@@ -11,8 +11,8 @@ const FrontCards = React.memo(function () {
             className="card-container"
             key={idx}
             style={{
-              transform: `translate(${Math.random() * 40 - 20}px,${
-                Math.random() * 40 - 20
+              transform: `translate(${Math.random() * 20 - 10}px,${
+                Math.random() * 20 - 10
               }px)`,
             }}
           >

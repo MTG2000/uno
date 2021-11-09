@@ -1,29 +1,13 @@
+import { isNullOrUndefined } from "util";
 import create from "zustand";
 import { canPlayCard } from "../BotsServer/BotsServer";
 import { wrapMod } from "../utils/helpers";
-
-export interface Player {
-  id: string;
-  name: string;
-  avatar: string;
-  cards: Card[];
-  isBot?: boolean;
-}
-
-export interface Card {
-  id?: string;
-  layoutId?: string;
-  digit?: number;
-  color?: "red" | "blue" | "green" | "yellow" | "black";
-  action?: "reverse" | "skip" | "draw two" | "draw four" | "wild";
-  flip?: boolean;
-  rotationY?: number;
-  playable?: boolean;
-}
+import { Card, Player } from "../utils/interfaces";
 
 interface StoreState {
   playerId: string;
   currentPlayer: number;
+  orderOffset: number;
   direction: number;
   tableStack: Card[];
   drawingStack: Card[];
@@ -32,7 +16,13 @@ interface StoreState {
 
   setPlayerId(playerId: string): void;
   init(players: Player[], startingCards: Card[]): void;
-  move(card?: Card, draw?: number, cardsToDraw?: Card[]): void;
+  move(
+    nxtPlayer: number,
+    card?: Card,
+    draw?: number,
+    cardsToDraw?: Card[]
+  ): void;
+  ready(): void;
 }
 
 let cardLayoutIdIdx = 111;
@@ -46,6 +36,7 @@ function generateDrawingCards(cnt: number) {
 export const useGameStore = create<StoreState>((set, get) => ({
   playerId: "",
   currentPlayer: 0,
+  orderOffset: 0,
   direction: 1,
   tableStack: [],
   players: [],
@@ -64,6 +55,7 @@ export const useGameStore = create<StoreState>((set, get) => ({
       if (players[myIdx].id === get().playerId) break;
       myIdx++;
     }
+
     for (let i = myIdx; i < players.length; i++) {
       playersFinal.push(players[i]);
     }
@@ -73,55 +65,58 @@ export const useGameStore = create<StoreState>((set, get) => ({
     }
 
     //Set Cards for players
-    playersFinal[0].cards = startingCards.map((c) => ({
+    let cardsToDistribute: Card[] = startingCards.map((c) => ({
       ...c,
       layoutId: `id_${cardLayoutIdIdx++}`,
       rotationY: 0,
       playable: myIdx === 0,
+      forPlayer: 0,
     }));
 
     for (let i = 1; i < playersFinal.length; i++) {
-      playersFinal[i].cards = Array(startingCards.length)
-        .fill(0)
-        .map(function () {
-          return { layoutId: `id_${cardLayoutIdIdx++}` };
-        });
+      cardsToDistribute = cardsToDistribute.concat(
+        Array(startingCards.length)
+          .fill(0)
+          .map(() => ({
+            layoutId: `id_${cardLayoutIdIdx++}`,
+            forPlayer: i,
+          }))
+      );
     }
 
     set({
-      drawingStack: generateDrawingCards(20),
+      players: playersFinal,
+      drawingStack: cardsToDistribute.concat(generateDrawingCards(20)),
+      orderOffset: myIdx,
     });
-    set({ players: playersFinal });
   },
 
-  move: (card?: Card, draw?: number, cardsToDraw?: Card[]) => {
-    const curPlayerObj = get().players[get().currentPlayer];
+  ready() {
+    set((state) => ({
+      players: state.players.map((player, idx) => {
+        return {
+          ...player,
+          cards: state.drawingStack.filter((c) => c.forPlayer === idx),
+        };
+      }),
+      drawingStack: state.drawingStack.filter((c) =>
+        isNullOrUndefined(c.forPlayer)
+      ),
+    }));
+  },
 
-    if (card?.action === "skip")
+  move: (
+    nxtPlayer: number,
+    card?: Card,
+    draw?: number,
+    cardsToDraw?: Card[]
+  ) => {
+    const curPlayerObj = get().players[get().currentPlayer];
+    nxtPlayer = wrapMod(nxtPlayer - get().orderOffset, get().players.length);
+
+    if (card?.action === "reverse")
       set((state) => ({
-        currentPlayer: wrapMod(
-          state.currentPlayer + state.direction * 2,
-          state.players.length
-        ),
-      }));
-    else if (card?.action === "reverse")
-      set((state) => ({
-        currentPlayer: wrapMod(
-          state.currentPlayer - 1 * state.direction,
-          state.players.length
-        ),
         direction: -1 * state.direction,
-      }));
-    else if (card?.action === "wild")
-      set((state) => ({
-        currentPlayer: state.currentPlayer,
-      }));
-    else
-      set((state) => ({
-        currentPlayer: wrapMod(
-          state.currentPlayer + state.direction,
-          state.players.length
-        ),
       }));
 
     if (draw) {
@@ -193,29 +188,34 @@ export const useGameStore = create<StoreState>((set, get) => ({
         lastPlayerDrawed: false,
       }));
     }
-    set((state) => ({
-      players: state.players.map((p) => {
-        if (p.id === get().playerId) {
-          const myTurn = get().currentPlayer === 0;
 
-          return {
-            ...p,
-            cards: p.cards.map((c) => {
-              return {
-                ...c,
-                playable:
-                  myTurn &&
-                  canPlayCard(
-                    get().tableStack[get().tableStack.length - 1],
-                    c,
-                    get().lastPlayerDrawed
-                  ),
-              };
-            }),
-          };
-        }
-        return p;
-      }),
-    }));
+    // just a little delay to give animations some room to play
+    setTimeout(() => {
+      set((state) => ({
+        players: state.players.map((p) => {
+          if (p.id === get().playerId) {
+            const myTurn = nxtPlayer === 0;
+
+            return {
+              ...p,
+              cards: p.cards.map((c) => {
+                return {
+                  ...c,
+                  playable:
+                    myTurn &&
+                    canPlayCard(
+                      get().tableStack[get().tableStack.length - 1],
+                      c,
+                      get().lastPlayerDrawed
+                    ),
+                };
+              }),
+            };
+          }
+          return p;
+        }),
+        currentPlayer: nxtPlayer,
+      }));
+    }, 500);
   },
 }));

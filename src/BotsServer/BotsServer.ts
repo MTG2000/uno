@@ -1,10 +1,12 @@
+import { finished } from "stream";
 import data from "../api/data.json";
-import { Card, Player } from "../stores/gameStore";
 import { EventsObject } from "../utils/EventsObject";
 import { shuffle, wrapMod } from "../utils/helpers";
+import { Card, Player } from "../utils/interfaces";
 
 export interface IMoveEvent {
   curPlayer: number;
+  nxtPlayer: number;
   card?: Card;
   draw?: number;
   cardsToDraw?: Card[];
@@ -24,6 +26,7 @@ class _BotsServer extends EventsObject {
   drawingStk: Card[] = [];
   sumDrawing: number = 0;
   lastPlayerDrawed: boolean = false;
+  playersFinished: number[] = [];
 
   init() {
     this.players = [];
@@ -32,6 +35,7 @@ class _BotsServer extends EventsObject {
     this.tableStk = [];
     this.drawingStk = [];
     this.sumDrawing = 0;
+    this.playersFinished = [];
     this.lastPlayerDrawed = false;
   }
 
@@ -53,11 +57,15 @@ class _BotsServer extends EventsObject {
     const cards = [...data.cards];
     shuffle(cards);
     shuffle(this.players);
+    const NUM_CARDS = 7;
     this.players.forEach((player, idx) => {
-      player.cards = cards.slice(idx * 7, (idx + 1) * 7) as Card[];
+      player.cards = cards.slice(
+        idx * NUM_CARDS,
+        (idx + 1) * NUM_CARDS
+      ) as Card[];
     });
     this.drawingStk = cards.slice(
-      this.players.length * 7,
+      this.players.length * NUM_CARDS,
       cards.length
     ) as Card[];
 
@@ -66,14 +74,14 @@ class _BotsServer extends EventsObject {
       playerId: this.players.filter((p) => !p.isBot)[0].id,
       players: this.players.map((p) => ({ ...p, cards: [] })),
     });
+  }
 
+  ready() {
     if (this.players[this.curPlayer].isBot) this.moveBot();
   }
 
   move(draw: boolean, card: Card | null) {
-    let moveEventObj: IMoveEvent = {
-      curPlayer: 0,
-    };
+    let moveEventObj: IMoveEvent = { nxtPlayer: 0, curPlayer: 0 };
 
     if (card && !canPlayCard(this.tableStk[0], card, this.lastPlayerDrawed))
       return false;
@@ -100,6 +108,35 @@ class _BotsServer extends EventsObject {
       this.lastPlayerDrawed = true;
     }
 
+    let nxtPlayer = this.getNextPlayer(card);
+
+    moveEventObj.curPlayer = this.curPlayer;
+    moveEventObj.nxtPlayer = nxtPlayer;
+
+    if (card) {
+      if (card.action === "draw two") this.sumDrawing += 2;
+      if (card.action === "draw four") this.sumDrawing += 4;
+
+      this.tableStk.unshift(card);
+      moveEventObj.card = card;
+      this.players[this.curPlayer].cards = this.players[
+        this.curPlayer
+      ].cards.filter((c) => c.id !== card.id);
+      this.lastPlayerDrawed = false;
+
+      // Check if game finished
+      if (this.players[this.curPlayer].cards.length === 0)
+        this.playersFinished.push(this.curPlayer);
+      if (this.playersFinished.length === this.players.length - 1)
+        this.finishGame();
+    }
+
+    this.curPlayer = nxtPlayer;
+    this.fireEvent("move", moveEventObj as IMoveEvent);
+    if (this.players[this.curPlayer].isBot) this.moveBot(); //HANDLE INFINTE STACK
+  }
+
+  getNextPlayer(card: Card | null) {
     let nxtPlayer = this.curPlayer;
 
     if (card?.action === "reverse") this.direction *= -1;
@@ -116,23 +153,12 @@ class _BotsServer extends EventsObject {
         this.players.length
       );
 
-    moveEventObj.curPlayer = nxtPlayer;
-
-    if (card) {
-      if (card.action === "draw two") this.sumDrawing += 2;
-      if (card.action === "draw four") this.sumDrawing += 4;
-
-      this.tableStk.unshift(card);
-      moveEventObj.card = card;
-      this.players[this.curPlayer].cards = this.players[
-        this.curPlayer
-      ].cards.filter((c) => c.id !== card.id);
-      this.lastPlayerDrawed = false;
+    //if nxtPlayer is out of the game (no cards left with him)
+    while (this.players[nxtPlayer].cards.length === 0) {
+      nxtPlayer = wrapMod(nxtPlayer + 1 * this.direction, this.players.length);
     }
 
-    this.curPlayer = nxtPlayer;
-    this.fireEvent("move", moveEventObj as IMoveEvent);
-    if (this.players[this.curPlayer].isBot) this.moveBot(); //HANDLE INFINTE STACK
+    return nxtPlayer;
   }
 
   moveBot() {
@@ -146,6 +172,12 @@ class _BotsServer extends EventsObject {
 
       return this.move(true, null);
     }, 1500);
+  }
+
+  finishGame() {
+    this.fireEvent("finish", {
+      players: this.playersFinished.map((idx) => this.players[idx]), //return players array in order they finished
+    });
   }
 }
 
