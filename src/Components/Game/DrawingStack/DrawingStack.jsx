@@ -6,14 +6,21 @@ import FrontCards from "./FrontCards";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
+const variants = {
+  init: { x: 0, y: 0 },
+  idleCenter: { x: "calc(50vw - 50%)", y: "calc(-1 * 50vh + 50% )" },
+  idleCorner: { x: "10px", y: "70px" },
+  idleCornerDisabled: { x: "10px", y: "80%", transition: { duration: 1 } },
+
+  hover: { scale: 1.05, transition: { duration: 0.3 } },
+};
+
 const Root = styled.div`
   --cardWidth: var(--cardWidthBigger);
 
   position: fixed;
-  /* bottom: calc(-1 * var(--cardWidth) / 2);
-  left: 40px; */
-  bottom: 50%;
-  left: 50%;
+  bottom: 0;
+  left: 0;
   transform: translate(-50%, 50%);
 
   width: var(--cardWidth);
@@ -46,6 +53,8 @@ export default function DrawingStack() {
   useEffect(() => {
     setTimeout(() => {
       startGame();
+      setGameStarted(true);
+      BotsServer.ready();
     }, 2000);
   }, []);
 
@@ -58,12 +67,17 @@ export default function DrawingStack() {
       onClick={handleClick}
       canHover={canHover}
       highlight={highlight}
-      initial={false}
-      whileHover={
-        canHover
-          ? { scale: 1.05, x: 30, y: -30, transition: { duration: 0.3 } }
-          : false
+      gameStarted={gameStarted}
+      variants={variants}
+      initial="init"
+      animate={
+        gameStarted
+          ? canHover
+            ? "idleCorner"
+            : "idleCornerDisabled"
+          : "idleCenter"
       }
+      whileHover={canHover ? "hover" : { scale: 1 }}
     >
       {drawingStack.map((card) => (
         <div className="card-container" key={card.layoutId}>

@@ -12,6 +12,19 @@
 
   --cardWidth: 150px;
   --cardWidthBigger: 200px;
+
+  --fontBig: 7rem;
+  --fontSmall: 3rem;
+}
+
+@media screen and (max-width: 1000px) {
+  :root {
+    --cardWidth: 70px;
+    --cardWidthBigger: 100px;
+
+    --fontBig: 4rem;
+    --fontSmall: 1.4rem;
+  }
 }
 
 body {

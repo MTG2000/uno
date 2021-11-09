@@ -8,7 +8,7 @@ const Root = styled.div`
 
   /* overflow: hidden; */
   padding-top: 141%;
-  border-radius: 15px;
+  border-radius: calc(var(--cardWidth) / 10);
 
   box-shadow: ${(props) =>
     !props.disableShadow ? "0 0 10px #292727" : "none"};
@@ -21,7 +21,7 @@ const Root = styled.div`
 
   .front,
   .back {
-    border-radius: 15px;
+    border-radius: calc(var(--cardWidth) / 10);
     background: whitesmoke;
     position: absolute;
     top: 0;
@@ -41,7 +41,7 @@ const Root = styled.div`
       left: 50%;
       transform: translate(-50%, -50%);
       color: var(--color);
-      font-size: 7rem;
+      font-size: var(--fontBig);
       font-family: sans-serif;
       font-weight: bold;
       text-shadow: 5px 5px black;
@@ -61,7 +61,7 @@ const Root = styled.div`
       color: white;
       -webkit-text-stroke: black 2px;
       font-weight: bold;
-      font-size: 3rem;
+      font-size: var(--fontSmall);
       font-style: italic;
 
       &.value-tl {
@@ -73,6 +73,25 @@ const Root = styled.div`
         bottom: 14px;
         right: 22px;
         transform: scale(-1);
+      }
+
+      @media screen and (max-width: 1000px) {
+        -webkit-text-stroke: black 1px;
+
+        .value {
+          text-shadow: 3px 3px black;
+        }
+
+        &.value-tl {
+          top: 9px;
+          left: 13px;
+        }
+
+        &.value-br {
+          bottom: 9px;
+          right: 13px;
+          transform: scale(-1);
+        }
       }
     }
 
@@ -88,6 +107,18 @@ const Root = styled.div`
         bottom: 25px;
         right: 20px;
         transform: scale(-1);
+      }
+      @media screen and (max-width: 1000px) {
+        &.icon-tl {
+          top: 14px;
+          left: 11px;
+        }
+
+        &.icon-br {
+          bottom: 14px;
+          right: 11px;
+          transform: scale(-1);
+        }
       }
     }
   }
