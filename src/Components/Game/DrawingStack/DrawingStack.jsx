@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import Card from "../../Shared/Card/Card";
-import { useGameStore } from "../../../stores/gameStore";
 import BotsServer from "../../../BotsServer/BotsServer";
 import FrontCards from "./FrontCards";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "../../../utils/hooks";
+import { ready } from "../../../stores/features/gameSlice";
 
 const variants = {
   init: { x: 0, y: 0 },
@@ -39,11 +40,12 @@ const Root = styled.div`
 `;
 
 export default function DrawingStack() {
-  const { drawingStack, currentPlayer, startGame } = useGameStore((state) => ({
-    drawingStack: state.drawingStack,
-    currentPlayer: state.currentPlayer,
-    startGame: state.ready,
+  const { drawingStack, currentPlayer } = useSelector((state) => ({
+    drawingStack: state.game.drawingStack,
+    currentPlayer: state.game.currentPlayer,
   }));
+  const dispatch = useDispatch();
+
   const [gameStarted, setGameStarted] = useState(false);
 
   const handleClick = () => {
@@ -52,7 +54,7 @@ export default function DrawingStack() {
 
   useEffect(() => {
     setTimeout(() => {
-      startGame();
+      dispatch(ready());
       setGameStarted(true);
       BotsServer.ready();
     }, 2000);

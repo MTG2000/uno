@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Card from "../../Shared/Card/Card";
-import { useGameStore } from "../../../stores/gameStore";
+import { useSelector } from "../../../utils/hooks";
 
 const Root = styled.div`
   position: fixed;
@@ -18,7 +18,7 @@ const Root = styled.div`
 `;
 
 export default function TableStack() {
-  const tableStack = useGameStore((state) => state.tableStack);
+  const tableStack = useSelector((state) => state.game.tableStack);
 
   return (
     <Root>

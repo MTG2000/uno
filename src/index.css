@@ -17,7 +17,17 @@
   --fontSmall: 3rem;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
+  :root {
+    --cardWidth: 100px;
+    --cardWidthBigger: 130px;
+
+    --fontBig: 5rem;
+    --fontSmall: 2rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
   :root {
     --cardWidth: 70px;
     --cardWidthBigger: 100px;

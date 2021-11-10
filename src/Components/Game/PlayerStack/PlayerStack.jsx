@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useGameStore } from "../../../stores/gameStore";
+import { useSelector } from "../../../utils/hooks";
 import CardsRow from "../CardsRow/CardsRow";
 
 const Root = styled.div`
@@ -11,12 +11,11 @@ const Root = styled.div`
 `;
 
 export default function PlayerStack() {
-  const { player, currentPlayer } = useGameStore((state) => ({
-    player: state.players[0],
-    currentPlayer: state.currentPlayer,
+  const { player, currentPlayer } = useSelector((state) => ({
+    player: state.game.players[0],
+    currentPlayer: state.game.currentPlayer,
   }));
   const cards = player?.cards || [];
-  console.log(cards);
 
   return (
     <Root>

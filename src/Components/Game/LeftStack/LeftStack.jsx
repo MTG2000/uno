@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useGameStore } from "../../../stores/gameStore";
+import { useSelector } from "../../../utils/hooks";
 import CardsColumn from "../CardsColumn/CardsColumn";
 
 const Root = styled.div`
@@ -10,9 +10,9 @@ const Root = styled.div`
 `;
 
 export default function LeftStack() {
-  const { player, currentPlayer } = useGameStore((state) => ({
-    player: state.players[1],
-    currentPlayer: state.currentPlayer,
+  const { player, currentPlayer } = useSelector((state) => ({
+    player: state.game.players[1],
+    currentPlayer: state.game.currentPlayer,
   }));
   const cards = player?.cards || [];
   return (

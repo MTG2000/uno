@@ -1,9 +1,7 @@
 import { AnimateSharedLayout } from "framer-motion";
 import TableStack from "./TableStack/TableStack.jsx";
 import PlayerStack from "./PlayerStack/PlayerStack.jsx";
-import { useGameStore } from "../../stores/gameStore";
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LeftStack from "./LeftStack/LeftStack.jsx";
 import RightStack from "./RightStack/RightStack.jsx";
 import TopStack from "./TopStack/TopStack.jsx";
@@ -14,9 +12,17 @@ import BotsServer, {
 } from "../../BotsServer/BotsServer";
 import DrawingStack from "./DrawingStack/DrawingStack.jsx";
 import { Player } from "../../utils/interfaces.js";
+import { useDispatch } from "../../utils/hooks";
+import {
+  init,
+  moveCard,
+  movePlayer,
+  setPlayerId,
+} from "../../stores/features/gameSlice";
 
 export default function Game() {
-  const { init, setPlayerId, move } = useGameStore();
+  const dispatch = useDispatch();
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     BotsServer.init();
@@ -25,29 +31,41 @@ export default function Game() {
     }
 
     BotsServer.addEventListener("start", ({ cards, players }: IStartEvent) => {
-      init([...players], [...cards]);
+      dispatch(init({ cards: [...cards], players: [...players] }));
+      setReady(true);
     });
 
     BotsServer.addEventListener(
       "move",
       ({ card, draw, cardsToDraw, nxtPlayer }: IMoveEvent) => {
         // console.log("MOVE EVENT: ", card, draw, nxtPlayer);
-
-        move(nxtPlayer, card, draw, cardsToDraw);
+        dispatch(
+          moveCard({
+            nextPlayer: nxtPlayer,
+            card,
+            draw,
+            cardsToDraw,
+          })
+        );
+        setTimeout(() => dispatch(movePlayer()), 500);
       }
     );
-    setPlayerId(BotsServer.joinPlayer(data.players[3] as Player));
-  }, [init, move, setPlayerId]);
+    dispatch(setPlayerId(BotsServer.joinPlayer(data.players[3] as Player)));
+  }, []);
 
   return (
     <div>
       <AnimateSharedLayout>
-        <TableStack />
-        <TopStack />
-        <LeftStack />
-        <RightStack />
-        <PlayerStack />
-        <DrawingStack />
+        {ready && (
+          <>
+            <TableStack />
+            <TopStack />
+            <LeftStack />
+            <RightStack />
+            <PlayerStack />
+            <DrawingStack />
+          </>
+        )}
       </AnimateSharedLayout>
     </div>
   );
