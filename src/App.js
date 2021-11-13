@@ -3,6 +3,8 @@ import { Routes, Route } from "react-router-dom";
 import Game from "./Components/Game/Game";
 import { Provider } from "react-redux";
 import { store } from "./stores/store";
+import { useEffect } from "react";
+
 const Root = styled.div`
   min-height: 100vh;
   background: radial-gradient(#027059, #045850);
@@ -11,6 +13,8 @@ const Root = styled.div`
 // screen.lockOrientation("landscape");
 
 function App() {
+  useEffect(() => {}, []);
+
   return (
     <Root>
       <Provider store={store}>
