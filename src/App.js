@@ -14,7 +14,11 @@ const Root = styled.div`
 }
 `;
 
+// screen.lockOrientation("landscape");
+
 function App() {
+  useEffect(() => {}, []);
+
   return (
     <Root>
       <Routes>

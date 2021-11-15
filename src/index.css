@@ -4,6 +4,39 @@
   box-sizing: border-box;
 }
 
+:root {
+  --red: hsl(0, 93%, 59%);
+  --yellow: hsl(55, 93%, 59%);
+  --green: hsl(122, 93%, 59%);
+  --blue: hsl(224, 93%, 59%);
+
+  --cardWidth: 150px;
+  --cardWidthBigger: 200px;
+
+  --fontBig: 7rem;
+  --fontSmall: 3rem;
+}
+
+@media screen and (max-width: 1200px) {
+  :root {
+    --cardWidth: 100px;
+    --cardWidthBigger: 130px;
+
+    --fontBig: 5rem;
+    --fontSmall: 2rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  :root {
+    --cardWidth: 70px;
+    --cardWidthBigger: 100px;
+
+    --fontBig: 4rem;
+    --fontSmall: 1.4rem;
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -16,4 +49,19 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.card-container {
+  perspective: 800px;
+  width: var(--cardWidth);
 }
