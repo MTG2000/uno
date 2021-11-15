@@ -69,3 +69,19 @@ export async function move(cardId, draw) {
     );
   });
 }
+
+export async function onPlayersUpdated(cb) {
+  socket.on("players-changed", cb);
+}
+
+export async function onStart(cb) {
+  socket.on("start-game", cb);
+}
+
+export async function onMove(cb) {
+  socket.on("move", cb);
+}
+
+export async function onPlayerLeft(cb) {
+  socket.on("player-left", cb);
+}
