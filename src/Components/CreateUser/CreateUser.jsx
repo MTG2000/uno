@@ -16,15 +16,16 @@ const CreateUser = () => {
   };
   const getLocalStorageImg = () => {
     if (localStorage.getItem("playerImg"))
-      return localStorage.getItem("playerImg");
-    else return "";
+      return JSON.parse(localStorage.getItem("playerImg"));
+    else return Math.random() * 100;
   };
   const [playerName, setPlayerName] = React.useState(getLocalStorageName);
-  const [playerImg, setPlayerImg] = React.useState(getLocalStorageImg);
+  const [imgSeed, setImgSeed] = React.useState(getLocalStorageImg);
+
   React.useEffect(() => {
     localStorage.setItem("playerName", playerName);
-    localStorage.setItem("playerImg", playerImg);
-  }, [playerName, playerImg]);
+    localStorage.setItem("playerImg", imgSeed);
+  }, [playerName, imgSeed]);
 
   return (
     <Paper>
@@ -35,7 +36,7 @@ const CreateUser = () => {
         <Grid item xs={10}>
           <TextField
             type="text"
-            placeholder="your name"
+            placeholder=""
             value={playerName}
             onChange={(e) => setPlayerName(e.target.value)}
           />
@@ -50,16 +51,11 @@ const CreateUser = () => {
           xs={10}
         >
           <Grid item sx={11}>
-            <Avatar playerImg={playerImg} />
+            <Avatar seed={`${playerName}${imgSeed}`} />
           </Grid>
           <Grid item xs={1}>
             <Button
-              onClick={() => {
-                let random = Math.floor(Math.random() * 20);
-                setPlayerImg(
-                  `https://avatars.dicebear.com/api/male/${playerName}${random}.svg`
-                );
-              }}
+              onClick={() => setImgSeed((seed) => seed + 1)}
               style={{
                 width: "4vw",
                 height: "4vw",
@@ -71,7 +67,7 @@ const CreateUser = () => {
           </Grid>
         </Grid>
         <Grid item xs={10}>
-          {playerName && playerImg && (
+          {playerName && imgSeed && (
             <Button>
               <Link to="/main-menu">
                 <Typography> let's play</Typography>

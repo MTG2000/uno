@@ -10,10 +10,10 @@ const Cavatar = styled.img`
   object-fit: cover;
   object-position: top;
 `;
-const Avatar = ({ playerImg }) => {
-  const imgSource = playerImg ? playerImg : "./imges/avatar.png";
-
-  return <Cavatar src={imgSource} alt="" />;
+const Avatar = ({ seed }) => {
+  return (
+    <Cavatar src={`https://avatars.dicebear.com/api/male/${seed}.svg`} alt="" />
+  );
 };
 
 export default Avatar;

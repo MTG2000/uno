@@ -14,11 +14,8 @@ import { useEffect } from "react";
 const Root = styled.div`
   min-height: 100vh;
 
-  background: linear-gradient(
-152deg,#041258,#423976 40%,#60547c);
-}`;
-
-
+  background: linear-gradient(152deg, #041258, #423976 40%, #60547c);
+`;
 
 // screen.lockOrientation("landscape");
 
@@ -27,15 +24,14 @@ function App() {
 
   return (
     <Root>
-      
       <Provider store={store}>
         <Routes>
           <Route path="/" element={<CreateUser />} />
-        <Route path="/main-menu" element={<MainMenu />} />
-        <Route path="/create-server" element={<CreateServer />} />
-        <Route path="/join-server" element={<JoinServer />} />
-        <Route path="/game" element={<Game />} />
-        <Route path="/waiting-lobby" element={<Lobby />} />
+          <Route path="/main-menu" element={<MainMenu />} />
+          <Route path="/create-server" element={<CreateServer />} />
+          <Route path="/join-server" element={<JoinServer />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/waiting-lobby" element={<Lobby />} />
         </Routes>
       </Provider>
     </Root>
