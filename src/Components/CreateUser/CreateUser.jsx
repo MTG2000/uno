@@ -19,8 +19,8 @@ const CreateUser = () => {
       return localStorage.getItem("playerImg");
     else return "";
   };
-  const [playerName, setPlayerName] = React.useState(getLocalStorageName);
-  const [playerImg, setPlayerImg] = React.useState(getLocalStorageImg);
+  const [playerName, setPlayerName] = React.useState("");
+  const [playerImg, setPlayerImg] = React.useState("");
   React.useEffect(() => {
     localStorage.setItem("playerName", playerName);
     localStorage.setItem("playerImg", playerImg);

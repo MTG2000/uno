@@ -3,14 +3,14 @@ import Grid from "@mui/material/Grid";
 import styled from "styled-components";
 import Typography from "../Typography/Typography";
 
-// const FlexContainer = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-item: center;
-//   margin-top: 2vh;
-//   position: relative;
-//   z-index: 25;
-// `;
+const FlexContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-item: center;
+  margin-top: 2vh;
+  position: relative;
+  z-index: 25;
+`;
 const Paper = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
   margin: 20vh 5vw ;
@@ -51,7 +51,7 @@ const APaper = ({ children }) => {
       </Grid> */}
       <Grid item xs={12} md={10} lg={8}>
         <Paper>
-          {/* <img className="uno" src="./imges/unoLogo.png" alt="" /> */}
+          {/* <img className="uno" src="/imges/unoLogo.png" alt="" /> */}
           <Grid container alignItems="center" justifyContent="center">
             <Grid item xs={6} md={7}>
               <Typography className="uno">UNOGAME</Typography>

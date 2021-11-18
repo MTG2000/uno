@@ -10,11 +10,11 @@
   --green: hsl(122, 93%, 59%);
   --blue: hsl(224, 93%, 59%);
 
-  --cardWidth: 150px;
-  --cardWidthBigger: 200px;
+  --cardWidth: 100px;
+  --cardWidthBigger: 130px;
 
-  --fontBig: 7rem;
-  --fontSmall: 3rem;
+  --fontBig: 5rem;
+  --fontSmall: 1.9rem;
 }
 
 @media screen and (max-width: 1200px) {
