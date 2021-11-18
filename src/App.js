@@ -14,8 +14,8 @@ import { useEffect } from "react";
 const Root = styled.div`
   min-height: 100vh;
 
-  background: radial-gradient(#4459cf, #181f48);
-}`;
+  background: linear-gradient(152deg, #041258, #423976 40%, #60547c);
+`;
 
 // screen.lockOrientation("landscape");
 

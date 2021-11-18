@@ -7,8 +7,12 @@ import Table from "../Shared/Table/Table";
 import Button from "../Shared/Button/Button";
 import TextField from "../Shared/TextField/TextField";
 import Typography from "../Shared/Typography/Typography";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { getServers, joinServer } from "../../api/api";
+import { useDispatch } from "../../utils/hooks";
+import { setPlayerId } from "../../stores/features/gameSlice";
+
 const CTableRow = styled.div`
   display: flex;
   justify-content: space-around;
@@ -26,33 +30,6 @@ const CTableCell = styled.p`
   align-items: center;
 `;
 
-const data = [
-  {
-    serverName: "hamza",
-    playerJoned: 2,
-    isPrivate: "yes",
-  },
-  {
-    serverName: " mohammad",
-    playerJoned: 3,
-    isPrivate: "no",
-  },
-  {
-    serverName: "yamahn ",
-    playerJoned: 1,
-    isPrivate: "yes",
-  },
-  {
-    serverName: "nour ",
-    playerJoned: 3,
-    isPrivate: "yes",
-  },
-  {
-    serverName: "mahmod ",
-    playerJoned: 2,
-    isPrivate: "no",
-  },
-];
 const JoinServer = () => {
   const [showPrivate, setShowPrivate] = React.useState(true);
   const [selectedServer, setSelectedServer] = React.useState(null);
@@ -60,25 +37,25 @@ const JoinServer = () => {
   const [password, setPassword] = React.useState(null); //for show button
   const [selectOne, setSelectOne] = React.useState(false); //for show button
 
-  const [isPravite, setIsPravite] = React.useState(false);
-  const [server, setServer] = React.useState(data);
-  const fetchServers = async () => {
-    //async code
-  };
-  const postPlayerJioned = async () => {
-    //async code
-  };
+  const [isPrivate, setIsPrivate] = React.useState(false);
+  const [servers, setServers] = React.useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   React.useEffect(() => {
-    fetchServers();
+    (async () => {
+      const servers = await getServers();
+      setServers(servers);
+    })();
   }, []);
-  const handleJoinServer = () => {
-    postPlayerJioned();
+
+  const handleJoinServer = async () => {
+    const serverId = servers[selectedServer].id;
+    const playerId = await joinServer(serverId, password);
+    dispatch(setPlayerId(playerId));
+    navigate("/waiting-lobby");
   };
-  React.useEffect(() => {
-    if (!showPrivate)
-      setServer(server.filter((iserver) => iserver.isPrivate === "no"));
-    else setServer(data);
-  }, [showPrivate, server]);
+
   return (
     <Paper>
       <Grid container justifyContent="center" alignItems="center" spacing={5}>
@@ -108,69 +85,69 @@ const JoinServer = () => {
         </Grid>
         <Grid item xs={12}>
           <Table>
-            {server.map((iserver, index) => {
-              return (
-                <CTableRow
-                  key={index}
-                  onClick={() => {
-                    setSelectedServer(index);
-                    setSelectOne(true);
-                    setPassword("");
-                    if (iserver.isPrivate === "yes") setIsPravite(true);
-                    else setIsPravite(false);
-                  }}
-                  style={
-                    index === selectedServer && iserver.isPrivate === "yes"
-                      ? {
-                          backgroundColor: "rgba(0,0,0,.5)",
-                          border: " 1px solid #fb0303",
-                          borderWidth: "0 0 3px 2px",
-                          borderRadius: "1rem",
-                          boxShadow: "inset 1px 0 5px 1px black",
-                        }
-                      : index === selectedServer
-                      ? {
-                          backgroundColor: "rgba(0,0,0,.5)",
-                          borderRadius: "1rem",
-                        }
-                      : {}
-                  }
-                >
-                  {index === selectedServer && iserver.isPrivate === "yes" ? (
-                    <>
-                      <CTableCell>{iserver.serverName}</CTableCell>
-                      <TextField
-                        type="password"
-                        placeholder="Enter the server password"
-                        style={{
-                          height: "100%",
-                          border: "none",
-                          background: "none",
-                          boxShadow: "none",
-                        }}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <CTableCell>{iserver.serverName}</CTableCell>
-                      <CTableCell>{iserver.playerJoned}/4</CTableCell>
-                      <CTableCell>{iserver.isPrivate}</CTableCell>
-                    </>
-                  )}
-                </CTableRow>
-              );
-            })}
+            {servers
+              .filter((s) => (showPrivate ? true : !s.isPrivate))
+              .map((server, index) => {
+                return (
+                  <CTableRow
+                    key={index}
+                    onClick={() => {
+                      setSelectedServer(index);
+                      setSelectOne(true);
+                      setPassword("");
+                      if (server.isPrivate) setIsPrivate(true);
+                      else setIsPrivate(false);
+                    }}
+                    style={
+                      index === selectedServer && server.isPrivate
+                        ? {
+                            backgroundColor: "rgba(0,0,0,.5)",
+                            border: " 1px solid #fb0303",
+                            borderWidth: "0 0 3px 2px",
+                            borderRadius: "1rem",
+                            boxShadow: "inset 1px 0 5px 1px black",
+                          }
+                        : index === selectedServer
+                        ? {
+                            backgroundColor: "rgba(0,0,0,.5)",
+                            borderRadius: "1rem",
+                          }
+                        : {}
+                    }
+                  >
+                    {index === selectedServer && server.isPrivate ? (
+                      <>
+                        <CTableCell>{server.serverName}</CTableCell>
+                        <TextField
+                          type="password"
+                          placeholder="Enter the server password"
+                          style={{
+                            height: "100%",
+                            border: "none",
+                            background: "none",
+                            boxShadow: "none",
+                          }}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <CTableCell>{server.name}</CTableCell>
+                        <CTableCell>{server.cntPlayers}</CTableCell>
+                        <CTableCell>{server.isPrivate ? "Yes" : ""}</CTableCell>
+                      </>
+                    )}
+                  </CTableRow>
+                );
+              })}
           </Table>
         </Grid>
         <Grid item sx={12}>
-          {((selectOne && isPravite && password) ||
-            (selectOne && !isPravite)) && (
+          {((selectOne && isPrivate && password) ||
+            (selectOne && !isPrivate)) && (
             <Button onClick={handleJoinServer}>
-              <Link to="/waiting-lobby">
-                <Typography>Join Game</Typography>
-              </Link>
+              <Typography>Join Game</Typography>
             </Button>
           )}
         </Grid>

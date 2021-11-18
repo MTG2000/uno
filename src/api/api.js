@@ -4,6 +4,17 @@ export async function getServers() {
   return new Promise((res, rej) => {
     socket.emit("get-servers", null, (err, servers) => {
       if (err) return rej(err);
+      console.log(servers);
+      res(servers);
+    });
+  });
+}
+
+export async function getServerPlayers() {
+  return new Promise((res, rej) => {
+    socket.emit("get-server-players", null, (err, servers) => {
+      if (err) return rej(err);
+      console.log(servers);
       res(servers);
     });
   });
@@ -24,24 +35,9 @@ export async function createServer(serverName, serverPassword = "") {
 
 export async function joinServer(serverId, serverPassword = "") {
   return new Promise((res, rej) => {
-    const player = JSON.parse(localStorage.getItem("player"));
     socket.emit(
       "join-server",
-      { serverId, serverPassword, player },
-      (err, playerId) => {
-        if (err) return rej(err);
-        res(playerId);
-      }
-    );
-  });
-}
-
-export async function joinServer(serverId, serverPassword = "") {
-  return new Promise((res, rej) => {
-    const player = JSON.parse(localStorage.getItem("player"));
-    socket.emit(
-      "join-server",
-      { serverId, serverPassword, player },
+      { serverId, serverPassword, player: getPlayer() },
       (err, playerId) => {
         if (err) return rej(err);
         res(playerId);
@@ -51,10 +47,7 @@ export async function joinServer(serverId, serverPassword = "") {
 }
 
 export function leaveServer() {
-  socket.emit("leave-server", (err, playerId) => {
-    if (err) return rej(err);
-    res(playerId);
-  });
+  socket.emit("leave-server");
 }
 
 export async function move(cardId, draw) {
@@ -84,4 +77,14 @@ export async function onMove(cb) {
 
 export async function onPlayerLeft(cb) {
   socket.on("player-left", cb);
+}
+
+let player = null;
+
+function getPlayer() {
+  if (player) return player;
+  player = {};
+  player.name = localStorage.getItem("playerName");
+  player.img = localStorage.getItem("playerImg");
+  return player;
 }

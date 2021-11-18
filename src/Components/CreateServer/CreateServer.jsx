@@ -5,7 +5,8 @@ import Paper from "../Shared/Paper/Paper";
 import Button from "../Shared/Button/Button";
 import TextField from "../Shared/TextField/TextField";
 import Switch from "../Shared/Switch/Switch";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { createServer, joinServer } from "../../api/api";
 
 import Typography from "../Shared/Typography/Typography";
 const style = {
@@ -17,11 +18,12 @@ const CreateServer = () => {
   const [serverName, setServerName] = React.useState("");
   const [serverPassword, setServerPassword] = React.useState("");
   const [isPrivate, setIsPrivate] = React.useState(true);
-  const postServerData = async () => {
-    //async code
-  };
-  const handleCreateServer = () => {
-    postServerData();
+  const navigate = useNavigate();
+
+  const handleCreateServer = async () => {
+    const serverId = await createServer(serverName, serverPassword);
+    await joinServer(serverId, serverPassword);
+    navigate("/waiting-lobby");
   };
   return (
     <Paper>
@@ -85,11 +87,7 @@ const CreateServer = () => {
         <Grid item xs={12} md={10} lg={8}>
           {((isPrivate && serverName && serverPassword) ||
             (!isPrivate && serverName)) && (
-            <Button onClick={handleCreateServer}>
-              <Link style={style} to="/waiting-lobby">
-                Creat Server
-              </Link>
-            </Button>
+            <Button onClick={handleCreateServer}>Creat Server</Button>
           )}
         </Grid>
       </Grid>
