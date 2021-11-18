@@ -11,9 +11,9 @@ const Root = styled("span")`
   width: 48px;
   height: 18px;
   cursor: pointer;
-  border: 2px solid #f37006;
+  border: 2px solid rgb(2 15 108);
   outline: 1px solid #f3f2f1;
-  box-shadow: 0px 0px 6px 3px #f94a00;
+  box-shadow: 0px 0px 6px 3px rgb(2 15 108);
   border-radius: 2rem;
 
   & .${switchUnstyledClasses.track} {
@@ -33,7 +33,7 @@ const Root = styled("span")`
     top: 0px;
     border-radius: 16px;
     box-shadow: 0 0 3px 0 #ffb100;
-    background-color: #f97301;
+    background-color: rgb(2 15 108);
     position: relative;
     transition: all 200ms ease;
   }
@@ -48,7 +48,7 @@ const Root = styled("span")`
       left: 2px;
       top: 0px;
       box-shadow: 0 0 3px 0 #ffb100;
-      background-color: #f97301;
+      background-color: rgb(2 15 108);
     }
 
     .${switchUnstyledClasses.track} {

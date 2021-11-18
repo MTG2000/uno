@@ -9,10 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { createServer, joinServer } from "../../api/api";
 
 import Typography from "../Shared/Typography/Typography";
-const style = {
-  color: "white",
-  textDecoration: "none",
-};
 
 const CreateServer = () => {
   const [serverName, setServerName] = React.useState("");

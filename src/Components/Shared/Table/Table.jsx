@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 const CTableContainer = styled.div`
   min-height: 35vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   border-radius: 1rem;
-  box-shadow: inset 0 0 8px black;
+
   color: white;
   display: grid;
   grid-template-columns: 1fr;
@@ -12,13 +12,13 @@ const CTableContainer = styled.div`
   max-height: 35vh;
   overflow-y: auto;
   ::-webkit-scrollbar {
-    background-color: rgb(233 19 19 / 80%);
+    background-color: #07caea;
     border-radius: 0 1rem 1rem 0;
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 1rem;
-    background-color: #f97301;
-    border: 2px solid #bf1317;
+    background-color: #0109f9;
+    border: 2px solid #07caea;
   }
   ::-webkit-scrollbar-track-piece {
   }
@@ -29,8 +29,8 @@ const CTableHead = styled.div`
   padding: 20px;
 `;
 const CTableCell = styled.p`
-  border-bottom: 1px solid #f90101;
-  color: #ffd437;
+  border-bottom: 1px solid rgb(2 15 108);
+  color: #fff;
 `;
 const CTableBody = styled.div`
   display: grid;
