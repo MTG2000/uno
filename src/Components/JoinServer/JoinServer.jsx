@@ -1,5 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
+import Checkbox from "@mui/material/Checkbox";
 import Paper from "../Shared/Paper/Paper";
 import Switch from "../Shared/Switch/Switch";
 import Stack from "@mui/material/Stack";
@@ -74,7 +75,9 @@ const JoinServer = () => {
             >
               Show Private Server
             </p>
-            <Switch
+            <Checkbox
+              defaultChecked
+              color="info"
               onChange={() => {
                 setShowPrivate(!showPrivate);
                 setSelectedServer(null);

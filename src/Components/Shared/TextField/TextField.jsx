@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 const CtextField = styled.input`
@@ -7,22 +6,19 @@ const CtextField = styled.input`
   height: 30%;
   padding: 4%;
   background-color: rgba(0, 0, 0, 0.3);
-  border: 1px solid #fb0303;
-  border-width: 0 0 3px 2px;
+  border: 2px solid rgb(2 15 108);
   border-radius: 1rem;
-  box-shadow: inset 1px 0 5px 1px black;
   text-align: center;
-  text-shadow: 0 0 3px;
   font-size: large;
   ::placeholder {
-    color: #f37000;
-    text-shadow: 0 0 3px;
+    color: #fff;
     opacity: 1;
   }
   :focus {
+    outline: none;
   }
 
-  color: #f37000;
+  color: #fff;
 `;
 const TextField = (props) => {
   return <CtextField {...props} />;

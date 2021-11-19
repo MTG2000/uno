@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 const Cbutton = styled.button`
   padding: 12px 17px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgb(2 15 108);
   border-radius: 1rem;
-  border: 1px solid #9b9d2d;
-  box-shadow: inset 0 0 5px 1px black, 0 0 10px 1px #e46b0c;
-  background-color: rgb(56 49 84);
+  text-align: center;
   color: white;
   transition: transform 0.3s ease-in-out;
   :hover {

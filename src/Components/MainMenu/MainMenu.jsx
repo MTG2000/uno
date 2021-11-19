@@ -5,8 +5,7 @@ import Button from "../Shared/Button/Button";
 import Typography from "../Shared/Typography/Typography";
 import { Link } from "react-router-dom";
 const style = {
-  color: "#ff8d00",
-  textDecorationColor: "#ffe000",
+  color: "#fff",
 };
 
 const MainMenu = () => {
@@ -26,7 +25,7 @@ const MainMenu = () => {
         >
           <Grid item xs={12} md={5}>
             <Button style={{ width: "80%" }}>
-              <Link to="/create-server">
+              <Link style={{ textDecoration: "none" }} to="/create-server">
                 <Typography>Create A Game</Typography>
               </Link>
             </Button>
@@ -36,7 +35,7 @@ const MainMenu = () => {
           </Grid>
           <Grid item xs={12} md={5}>
             <Button style={{ width: "80%" }}>
-              <Link to="/join-server">
+              <Link style={{ textDecoration: "none" }} to="/join-server">
                 <Typography>Join A Game</Typography>
               </Link>
             </Button>
