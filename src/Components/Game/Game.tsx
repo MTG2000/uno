@@ -19,38 +19,51 @@ import {
   movePlayer,
   setPlayerId,
 } from "../../stores/features/gameSlice";
+import { onMove } from "../../api/api.js";
 
 export default function Game() {
   const dispatch = useDispatch();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    BotsServer.init();
-    for (let i = 0; i < 3; i++) {
-      BotsServer.joinPlayer(data.players[i] as Player, true);
-    }
+    // BotsServer.init();
+    // for (let i = 0; i < 3; i++) {
+    //   BotsServer.joinPlayer(data.players[i] as Player, true);
+    // }
 
-    BotsServer.addEventListener("start", ({ cards, players }: IStartEvent) => {
-      dispatch(init({ cards: [...cards], players: [...players] }));
-      setReady(true);
-    });
+    // BotsServer.addEventListener("start", ({ cards, players }: IStartEvent) => {
+    //   dispatch(init({ cards: [...cards], players: [...players] }));
+    //   setReady(true);
+    // });
 
-    BotsServer.addEventListener(
-      "move",
-      ({ card, draw, cardsToDraw, nxtPlayer }: IMoveEvent) => {
-        // console.log("MOVE EVENT: ", card, draw, nxtPlayer);
-        dispatch(
-          moveCard({
-            nextPlayer: nxtPlayer,
-            card,
-            draw,
-            cardsToDraw,
-          })
-        );
-        setTimeout(() => dispatch(movePlayer()), 500);
-      }
-    );
-    dispatch(setPlayerId(BotsServer.joinPlayer(data.players[3] as Player)));
+    // BotsServer.addEventListener(
+    //   "move",
+    //   ({ card, draw, cardsToDraw, nxtPlayer }: IMoveEvent) => {
+    //     // console.log("MOVE EVENT: ", card, draw, nxtPlayer);
+    //     dispatch(
+    //       moveCard({
+    //         nextPlayer: nxtPlayer,
+    //         card,
+    //         draw,
+    //         cardsToDraw,
+    //       })
+    //     );
+    //     setTimeout(() => dispatch(movePlayer()), 500);
+    //   }
+    // );
+    // dispatch(setPlayerId(BotsServer.joinPlayer(data.players[3] as Player)));
+
+    onMove(({ card, draw, cardsToDraw, nxtPlayer }: IMoveEvent) => {
+      dispatch(
+        moveCard({
+          nextPlayer: nxtPlayer,
+          card,
+          draw,
+          cardsToDraw,
+        })
+      );
+      setTimeout(() => dispatch(movePlayer()), 500);
+    })
   }, []);
 
   return (

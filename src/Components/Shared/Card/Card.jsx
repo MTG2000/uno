@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Image from "../Image/Image";
 import { motion } from "framer-motion";
 import BotsServer from "../../../BotsServer/BotsServer";
+import { move } from "../../../api/api";
 
 const Root = styled.div`
   --color: var(--${(props) => props.color});
@@ -140,6 +141,10 @@ export default function Card({
   playable,
   disableShadow = false,
 }) {
+  const onClick = () => {
+    if (playable) move(false, id);
+  };
+
   const getFrontContent = () => {
     if (color === "black" && action === "wild")
       return <Image src={`/assets/images/wild.png`} ratio={590 / 418} />;
@@ -208,11 +213,7 @@ export default function Card({
       selectable={selectable}
       playable={playable}
       disableShadow={disableShadow}
-      onClick={
-        playable
-          ? () => BotsServer.move(false, { id, color, action, digit, layoutId })
-          : undefined
-      }
+      onClick={onClick}
     >
       <div className="front">{getFrontContent()}</div>
       <div className="back">

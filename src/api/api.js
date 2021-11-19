@@ -4,7 +4,6 @@ export async function getServers() {
   return new Promise((res, rej) => {
     socket.emit("get-servers", null, (err, servers) => {
       if (err) return rej(err);
-      console.log(servers);
       res(servers);
     });
   });
@@ -14,7 +13,6 @@ export async function getServerPlayers() {
   return new Promise((res, rej) => {
     socket.emit("get-server-players", null, (err, servers) => {
       if (err) return rej(err);
-      console.log(servers);
       res(servers);
     });
   });
@@ -50,14 +48,14 @@ export function leaveServer() {
   socket.emit("leave-server");
 }
 
-export async function move(cardId, draw) {
+export async function move(draw, cardId) {
   return new Promise((res, rej) => {
     socket.emit(
       "move",
       { cardId, draw },
       (err, { nxtPlayer, card, draw, cardsToDraw }) => {
         if (err) return rej(err);
-        res({ nxtPlayer, card, draw, cardsToDraw });
+        res();
       }
     );
   });
@@ -68,7 +66,10 @@ export async function onPlayersUpdated(cb) {
 }
 
 export async function onStart(cb) {
-  socket.on("start-game", cb);
+  socket.on("start-game", (...params) => {
+    console.log("START");
+    console.log(params);
+  });
 }
 
 export async function onMove(cb) {

@@ -6,7 +6,10 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Loding from "./Loding";
 import styled from "styled-components";
-import { getServerPlayers, onPlayersUpdated } from "../../api/api";
+import { getServerPlayers, onPlayersUpdated, onStart } from "../../api/api";
+import { useDispatch } from "../../utils/hooks";
+import { init } from "../../stores/features/gameSlice";
+import { useNavigate } from "react-router-dom";
 
 const Span = styled.span`
   color: #f37006;
@@ -17,13 +20,27 @@ const Span = styled.span`
 
 const Lobby = () => {
   const [players, setPlayers] = React.useState([]);
+  const [ready, setReady] = React.useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    let timeout = null;
     (async () => {
       const ps = await getServerPlayers();
       setPlayers(ps);
       onPlayersUpdated((players) => setPlayers(players));
+      onStart(({ players, cards }) => {
+        dispatch(init({ cards, players }));
+        setReady(true);
+        timeout = setTimeout(() => navigate("/game"), 2000);
+      });
     })();
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
   }, []);
 
   return (

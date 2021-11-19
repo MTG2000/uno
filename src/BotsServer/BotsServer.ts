@@ -132,7 +132,7 @@ class _BotsServer extends EventsObject {
 
     this.curPlayer = nxtPlayer;
     this.fireEvent("move", moveEventObj as IMoveEvent);
-    if (this.players[this.curPlayer].isBot) this.moveBot(); //HANDLE INFINTE STACK
+    if (this.players[this.curPlayer].isBot) this.moveBot();
   }
 
   getNextPlayer(card: Card | null) {
