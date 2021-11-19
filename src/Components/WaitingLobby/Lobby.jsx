@@ -6,7 +6,12 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Loding from "./Loding";
 import styled from "styled-components";
-import { getServerPlayers, onPlayersUpdated, onStart } from "../../api/api";
+import {
+  getServerPlayers,
+  leaveServer,
+  onPlayersUpdated,
+  onStart,
+} from "../../api/api";
 import { useDispatch } from "../../utils/hooks";
 import { init } from "../../stores/features/gameSlice";
 import { useNavigate } from "react-router-dom";

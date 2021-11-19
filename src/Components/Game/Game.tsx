@@ -19,11 +19,12 @@ import {
   movePlayer,
   setPlayerId,
 } from "../../stores/features/gameSlice";
-import { onMove } from "../../api/api.js";
+import { leaveServer, onMove, readyToServer } from "../../api/api.js";
 
 export default function Game() {
   const dispatch = useDispatch();
   const [ready, setReady] = useState(false);
+
 
   useEffect(() => {
     // BotsServer.init();
@@ -53,7 +54,9 @@ export default function Game() {
     // );
     // dispatch(setPlayerId(BotsServer.joinPlayer(data.players[3] as Player)));
 
+    setTimeout(() => { setReady(true); readyToServer() }, 1000)
     onMove(({ card, draw, cardsToDraw, nxtPlayer }: IMoveEvent) => {
+
       dispatch(
         moveCard({
           nextPlayer: nxtPlayer,
@@ -64,6 +67,10 @@ export default function Game() {
       );
       setTimeout(() => dispatch(movePlayer()), 500);
     })
+
+    return () => {
+      leaveServer();
+    }
   }, []);
 
   return (

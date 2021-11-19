@@ -35,11 +35,12 @@ const CreateServer = () => {
             />
           </Stack>
         </Grid>
-        <Grid item xs={10} sm={8} md={6} lg={5}>
+        <Grid item xs={10} sm={8} md={6} lg={5} marginTop={2}>
           <Stack
             direction="row"
-            justifyContent="space-between"
+            justifyContent="center"
             alignItems="center"
+            gap="32px"
           >
             <p
               style={{
@@ -47,7 +48,7 @@ const CreateServer = () => {
                 textShadow: `${isPrivate ? "0 0 3px white" : ""}`,
               }}
             >
-              private
+              Private
             </p>
             <Switch
               onChange={() => {
@@ -66,9 +67,9 @@ const CreateServer = () => {
           </Stack>
         </Grid>
         {isPrivate && (
-          <Grid item xs={12} md={10}>
+          <Grid item xs={12} md={10} marginTop={2}>
             <Stack justifyContent="center" spacing={1} alignItems="center">
-              <Typography>server Password</Typography>
+              <Typography>Server Password</Typography>
 
               <TextField
                 type="password"

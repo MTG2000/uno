@@ -1,15 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 const Cbutton = styled.button`
-  padding: 12px 17px;
+  padding: 16px 36px;
+  text-transform: capitalize;
   background-color: rgba(0, 0, 0, 0.3);
-  border: 2px solid rgb(2 15 108);
-  border-radius: 1rem;
+  border: 1px solid rgb(2 15 108);
+  border-radius: 12px;
   text-align: center;
   color: white;
   transition: transform 0.3s ease-in-out;
   :hover {
-    transform: scale(1.1);
+    cursor: pointer;
+    transform: scale(1.05);
   }
 `;
 const Button = ({ children, ...props }) => {

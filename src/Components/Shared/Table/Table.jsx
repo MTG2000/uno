@@ -43,7 +43,7 @@ const Table = ({ children }) => {
     <CTableContainer>
       <CTableHead>
         <CTableCell>Server Name</CTableCell>
-        <CTableCell>Playered Join</CTableCell>
+        <CTableCell>Players Joined</CTableCell>
         <CTableCell>Is Private</CTableCell>
       </CTableHead>
       <CTableBody>{children}</CTableBody>

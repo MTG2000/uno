@@ -33,12 +33,13 @@ const CreateUser = () => {
         <Grid item xs={10}>
           <Typography>Enter Your Name</Typography>
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={10} md={6}>
           <TextField
             type="text"
             placeholder=""
             value={playerName}
             onChange={(e) => setPlayerName(e.target.value)}
+            pad
           />
         </Grid>
 
@@ -70,7 +71,7 @@ const CreateUser = () => {
           {playerName && imgSeed && (
             <Button>
               <Link style={{ textDecoration: "none" }} to="/main-menu">
-                <Typography> let's play </Typography>
+                <Typography> Save & Go </Typography>
               </Link>
             </Button>
           )}

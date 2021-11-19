@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, current } from "@reduxjs/toolkit";
 import { isNullOrUndefined } from "util";
 import { canPlayCard } from "../../BotsServer/BotsServer";
 import { wrapMod } from "../../utils/helpers";
@@ -92,6 +92,7 @@ export const gameSlice = createSlice({
           cards: state.drawingStack.filter((c) => c.forPlayer === idx),
         };
       });
+
       state.drawingStack = state.drawingStack.filter((c) =>
         isNullOrUndefined(c.forPlayer)
       );
@@ -106,7 +107,9 @@ export const gameSlice = createSlice({
       }>
     ) {
       let { nextPlayer, card, cardsToDraw = [], draw } = action.payload;
+
       const curPlayerObj = state.players[state.currentPlayer];
+
       nextPlayer = wrapMod(
         nextPlayer - state.orderOffset,
         state.players.length
@@ -139,7 +142,7 @@ export const gameSlice = createSlice({
       }
 
       if (card) {
-        let layoutId = card.layoutId;
+        let layoutId: string | undefined = "";
         let shouldFlip = false;
         if (curPlayerObj.id !== state.playerId) {
           layoutId =
@@ -148,9 +151,12 @@ export const gameSlice = createSlice({
             ].layoutId;
           shouldFlip = true;
         } else {
+          layoutId = curPlayerObj.cards.find((c) => c.id === card?.id)
+            ?.layoutId;
           const cardToMove = curPlayerObj.cards.filter(
             (c) => c.layoutId === layoutId
           )[0];
+          console.log(layoutId, current(cardToMove));
 
           card.color = cardToMove.color;
           card.action = cardToMove.action;

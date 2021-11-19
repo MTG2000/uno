@@ -4,21 +4,23 @@ const CtextField = styled.input`
   display: inline-block;
   width: 75%;
   height: 30%;
-  padding: 4%;
+  padding: 22px 32px;
   background-color: rgba(0, 0, 0, 0.3);
-  border: 2px solid rgb(2 15 108);
-  border-radius: 1rem;
+  border: 1px solid rgb(2 15 108);
+  border-radius: 10px;
   text-align: center;
   font-size: large;
+  color: var(--secondary);
+  box-shadow: inset 1px 3px 10px #1a1b35;
+
   ::placeholder {
     color: #fff;
     opacity: 1;
   }
   :focus {
-    outline: none;
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
   }
-
-  color: #fff;
 `;
 const TextField = (props) => {
   return <CtextField {...props} />;

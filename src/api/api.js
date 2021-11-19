@@ -38,10 +38,17 @@ export async function joinServer(serverId, serverPassword = "") {
       { serverId, serverPassword, player: getPlayer() },
       (err, playerId) => {
         if (err) return rej(err);
+        setTimeout(() => {
+          // socket.emit("add-bots");
+        }, 2000);
         res(playerId);
       }
     );
   });
+}
+
+export function readyToServer() {
+  socket.emit("ready");
 }
 
 export function leaveServer() {
@@ -50,14 +57,10 @@ export function leaveServer() {
 
 export async function move(draw, cardId) {
   return new Promise((res, rej) => {
-    socket.emit(
-      "move",
-      { cardId, draw },
-      (err, { nxtPlayer, card, draw, cardsToDraw }) => {
-        if (err) return rej(err);
-        res();
-      }
-    );
+    socket.emit("move", { cardId, draw }, (err) => {
+      if (err) return rej(err);
+      res();
+    });
   });
 }
 
@@ -66,10 +69,7 @@ export async function onPlayersUpdated(cb) {
 }
 
 export async function onStart(cb) {
-  socket.on("start-game", (...params) => {
-    console.log("START");
-    console.log(params);
-  });
+  socket.on("start-game", cb);
 }
 
 export async function onMove(cb) {

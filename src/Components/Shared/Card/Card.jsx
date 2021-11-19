@@ -35,6 +35,7 @@ const Root = styled.div`
 
   .front {
     transform: translateZ(1px);
+    font-family: sans-serif;
 
     .value {
       position: absolute;

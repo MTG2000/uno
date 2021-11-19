@@ -13,14 +13,14 @@ const MainMenu = () => {
     <Paper>
       <Grid container alignItems="center" justifyContent="center" spacing={4}>
         <Grid item xs={10}>
-          <Typography>Start Pling:</Typography>
+          <Typography>Start Playing:</Typography>
         </Grid>
         <Grid
           item
           container
           alignItems="center"
           justifyContent="center"
-          spacing={4}
+          spacing={2}
           sx={12}
         >
           <Grid item xs={12} md={5}>
@@ -41,13 +41,7 @@ const MainMenu = () => {
             </Button>
           </Grid>
         </Grid>
-        <Grid
-          item
-          container
-          alignItems="center"
-          justifyContent="center"
-          sx={12}
-        >
+        <Grid item container alignItems="center" justifyContent="center" mt={6}>
           <Grid item xs={6}>
             <Link style={style} to="/">
               Profile Setting

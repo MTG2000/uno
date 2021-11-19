@@ -2,7 +2,6 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
 import Paper from "../Shared/Paper/Paper";
-import Switch from "../Shared/Switch/Switch";
 import Stack from "@mui/material/Stack";
 import Table from "../Shared/Table/Table";
 import Button from "../Shared/Button/Button";
@@ -22,6 +21,9 @@ const CTableRow = styled.div`
   // grid-template-columns: repeat(3, 1fr);
   border-radius: 2rem;
   height: 45px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const CTableCell = styled.p`
   height: 30px;
@@ -48,6 +50,12 @@ const JoinServer = () => {
       const servers = await getServers();
       setServers(servers);
     })();
+    const interval = setInterval(async () => {
+      const servers = await getServers();
+      setServers(servers);
+    }, 4000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleJoinServer = async () => {
