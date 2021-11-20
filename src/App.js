@@ -10,11 +10,16 @@ import Lobby from "./Components/WaitingLobby/Lobby";
 import { Provider } from "react-redux";
 import { store } from "./stores/store";
 import { useEffect } from "react";
+import StartPage from "./Components/StartPage/StartPage";
+import { AnimatePresence } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 const Root = styled.div`
   min-height: 100vh;
-
-  background: radial-gradient(#5065da, #20295a);
+  width: 100%;
+  overflow-x: hidden;
+  /* background: radial-gradient(#5065da, #20295a); */
+  background: radial-gradient(#3d50ba, #161d3f);
 `;
 
 // screen.lockOrientation("landscape");
@@ -22,17 +27,42 @@ const Root = styled.div`
 function App() {
   useEffect(() => {}, []);
 
+  const location = useLocation();
+
   return (
     <Root>
       <Provider store={store}>
-        <Routes>
-          <Route path="/" element={<CreateUser />} />
-          <Route path="/main-menu" element={<MainMenu />} />
-          <Route path="/create-server" element={<CreateServer />} />
-          <Route path="/join-server" element={<JoinServer />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/waiting-lobby" element={<Lobby />} />
-        </Routes>
+        <AnimatePresence exitBeforeEnter>
+          <Routes location={location} key={location.key}>
+            <Route
+              key={"/create-user"}
+              path="/create-user"
+              element={<CreateUser />}
+            />
+            <Route
+              key={"/main-menu"}
+              path="/main-menu"
+              element={<MainMenu />}
+            />
+            <Route
+              key={"/create-server"}
+              path="/create-server"
+              element={<CreateServer />}
+            />
+            <Route
+              key={"/join-server"}
+              path="/join-server"
+              element={<JoinServer />}
+            />
+            <Route key={"/game"} path="/game" element={<Game />} />
+            <Route
+              key={"/waiting-lobby"}
+              path="/waiting-lobby"
+              element={<Lobby />}
+            />
+            <Route key={"/"} path="/" element={<StartPage />} />
+          </Routes>
+        </AnimatePresence>
       </Provider>
     </Root>
   );

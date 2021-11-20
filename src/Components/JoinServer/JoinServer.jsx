@@ -81,7 +81,7 @@ const JoinServer = () => {
                 textShadow: `${showPrivate ? "0 0 3px white" : ""}`,
               }}
             >
-              Show Private Server
+              Show Private Servers
             </p>
             <Checkbox
               defaultChecked

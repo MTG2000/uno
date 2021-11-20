@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-const Ctypography = styled.p`
+import { Typography as MuiTypography } from "@mui/material";
+
+const Ctypography = styled(MuiTypography)`
   color: white;
   font-weight: bold;
 `;

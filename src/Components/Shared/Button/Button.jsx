@@ -8,10 +8,17 @@ const Cbutton = styled.button`
   border-radius: 12px;
   text-align: center;
   color: white;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.1s ease-in-out;
+  transition-timing-function: ease-out;
   :hover {
     cursor: pointer;
     transform: scale(1.05);
+    transition-timing-function: ease-in;
+  }
+
+  :active {
+    transform: scale(0.96);
+    transition-duration: 0.05s;
   }
 `;
 const Button = ({ children, ...props }) => {

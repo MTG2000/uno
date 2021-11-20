@@ -14,14 +14,14 @@
   --secondary: cyan;
   --panel-bg: rgba(0, 0, 0, 0.3);
 
-  --cardWidth: 100px;
-  --cardWidthBigger: 130px;
+  --cardWidth: 150px;
+  --cardWidthBigger: 200px;
 
-  --fontBig: 5rem;
-  --fontSmall: 1.9rem;
+  --fontBig: 7rem;
+  --fontSmall: 3rem;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1600px) {
   :root {
     --cardWidth: 100px;
     --cardWidthBigger: 130px;
@@ -40,18 +40,18 @@
     --fontSmall: 1.4rem;
   }
 }
-@import url("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap");
 
 body {
   margin: 0;
-  font-family: Audiowide !important;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 * {
-  font-family: Audiowide !important;
+  /* font-family: "Cabin", sans-serif !important; */
+  font-family: "Roboto Mono", monospace !important;
 }
 
 code {
@@ -72,4 +72,25 @@ code {
 .card-container {
   perspective: 800px;
   width: var(--cardWidth);
+}
+
+/* width */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #161d3f;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background-color: black;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #161d3f;
 }

@@ -10,10 +10,10 @@ const style = {
 
 const MainMenu = () => {
   return (
-    <Paper>
+    <Paper key="main-menu">
       <Grid container alignItems="center" justifyContent="center" spacing={4}>
         <Grid item xs={10}>
-          <Typography>Start Playing:</Typography>
+          <Typography fontSize={22}>Start Playing</Typography>
         </Grid>
         <Grid
           item
@@ -24,26 +24,28 @@ const MainMenu = () => {
           sx={12}
         >
           <Grid item xs={12} md={5}>
-            <Button style={{ width: "80%" }}>
-              <Link style={{ textDecoration: "none" }} to="/create-server">
+            <Link style={{ textDecoration: "none" }} to="/create-server">
+              <Button style={{ width: "80%" }}>
+                <img src="assets/icons/tv.svg" alt="" />
                 <Typography>Create A Game</Typography>
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </Grid>
           <Grid item sx={{ display: { xs: "none", md: "initial" } }} md={2}>
             <Typography>OR</Typography>
           </Grid>
           <Grid item xs={12} md={5}>
-            <Button style={{ width: "80%" }}>
-              <Link style={{ textDecoration: "none" }} to="/join-server">
+            <Link style={{ textDecoration: "none" }} to="/join-server">
+              <Button style={{ width: "80%" }}>
+                <img src="assets/icons/add.svg" alt="" />
                 <Typography>Join A Game</Typography>
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </Grid>
         </Grid>
         <Grid item container alignItems="center" justifyContent="center" mt={6}>
           <Grid item xs={6}>
-            <Link style={style} to="/">
+            <Link style={style} to="/create-user">
               Profile Setting
             </Link>
           </Grid>
@@ -56,9 +58,14 @@ const MainMenu = () => {
           sx={12}
         >
           <Grid item xs={6}>
-            <Link style={style} to="/">
+            <a
+              style={style}
+              href="https://www.ultraboardgames.com/uno/game-rules.php"
+              target="_blank"
+              rel="noreferrer"
+            >
               Game Rules
-            </Link>
+            </a>
           </Grid>
         </Grid>
       </Grid>

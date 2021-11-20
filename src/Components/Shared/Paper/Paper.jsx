@@ -1,4 +1,5 @@
 import Grid from "@mui/material/Grid";
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
 const Paper = styled.div`
@@ -20,9 +21,19 @@ const Paper = styled.div`
   }
 `;
 
-const APaper = ({ children }) => {
+const APaper = ({ children, ...props }) => {
   return (
-    <Grid container alignItems="center" justifyContent="center">
+    <Grid
+      as={motion.div}
+      initial={{ opacity: 0, x: 500 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -500 }}
+      transition={{ duration: 0.7 }}
+      container
+      alignItems="center"
+      justifyContent="center"
+      {...props}
+    >
       <Grid item xs={12} md={10} lg={8}>
         <Paper>
           <img className="uno-img" src="/imges/unoLogo.png" alt="" />
