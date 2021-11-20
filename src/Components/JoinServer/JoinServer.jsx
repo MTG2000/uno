@@ -154,7 +154,7 @@ const JoinServer = () => {
               })}
           </Table>
         </Grid>
-        <Grid item sx={12}>
+        <Grid item xs={12}>
           {((selectOne && isPrivate && password) ||
             (selectOne && !isPrivate)) && (
             <Button onClick={handleJoinServer}>

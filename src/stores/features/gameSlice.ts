@@ -85,6 +85,7 @@ export const gameSlice = createSlice({
       state.drawingStack = cardsToDistribute.concat(generateDrawingCards(20));
       state.orderOffset = myIdx;
     },
+
     ready(state) {
       state.players = state.players.map((player, idx) => {
         return {

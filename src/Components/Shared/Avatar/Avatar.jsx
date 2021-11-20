@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 const Cavatar = styled.img`
-  width: 10vw;
-  height: 10vw;
+  width: 100%;
+  max-width: 120px;
+
   border-radius: 50%;
 
   border: 2px solid rgb(2 15 108);

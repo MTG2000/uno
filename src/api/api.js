@@ -48,7 +48,7 @@ export async function joinServer(serverId, serverPassword = "") {
 }
 
 export function readyToServer() {
-  socket.emit("ready");
+  socket.emit("start-game");
 }
 
 export function leaveServer() {
@@ -64,20 +64,34 @@ export async function move(draw, cardId) {
   });
 }
 
-export async function onPlayersUpdated(cb) {
+export function onPlayersUpdated(cb) {
   socket.on("players-changed", cb);
+  return () => socket.off("players-changed", cb);
 }
 
-export async function onStart(cb) {
-  socket.on("start-game", cb);
+export function onInit(cb) {
+  socket.on("init-game", cb);
+
+  return () => socket.off("init-game", cb);
 }
 
-export async function onMove(cb) {
+export function onMove(cb) {
   socket.on("move", cb);
+  return () => socket.off("move", cb);
 }
 
-export async function onPlayerLeft(cb) {
+export function onPlayerLeft(cb) {
   socket.on("player-left", cb);
+  return () => socket.off("player-left", cb);
+}
+
+export function onFinishGame(cb) {
+  socket.on("finished-game", cb);
+  return () => socket.off("finished-game", cb);
+}
+
+export function removeAllListeners() {
+  socket.removeAllListeners();
 }
 
 let player = null;

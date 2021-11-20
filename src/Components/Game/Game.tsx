@@ -5,56 +5,28 @@ import { useEffect, useState } from "react";
 import LeftStack from "./LeftStack/LeftStack.jsx";
 import RightStack from "./RightStack/RightStack.jsx";
 import TopStack from "./TopStack/TopStack.jsx";
-import data from "../../api/data.json";
-import BotsServer, {
+import {
   IMoveEvent,
-  IStartEvent,
 } from "../../BotsServer/BotsServer";
 import DrawingStack from "./DrawingStack/DrawingStack.jsx";
-import { Player } from "../../utils/interfaces.js";
 import { useDispatch } from "../../utils/hooks";
 import {
-  init,
   moveCard,
   movePlayer,
-  setPlayerId,
 } from "../../stores/features/gameSlice";
-import { leaveServer, onMove, readyToServer } from "../../api/api.js";
+import { leaveServer, onFinishGame, onMove, readyToServer, removeAllListeners } from "../../api/api.js";
+import Scoreboard from "./Scoreboard/Scoreboard.jsx";
+import { Player } from "../../utils/interfaces.js";
 
 export default function Game() {
   const dispatch = useDispatch();
-  const [ready, setReady] = useState(false);
-
+  const [finished, setFinished] = useState(false)
+  const [playersOrder, setPlayersOrder] = useState<Player[]>([])
 
   useEffect(() => {
-    // BotsServer.init();
-    // for (let i = 0; i < 3; i++) {
-    //   BotsServer.joinPlayer(data.players[i] as Player, true);
-    // }
 
-    // BotsServer.addEventListener("start", ({ cards, players }: IStartEvent) => {
-    //   dispatch(init({ cards: [...cards], players: [...players] }));
-    //   setReady(true);
-    // });
 
-    // BotsServer.addEventListener(
-    //   "move",
-    //   ({ card, draw, cardsToDraw, nxtPlayer }: IMoveEvent) => {
-    //     // console.log("MOVE EVENT: ", card, draw, nxtPlayer);
-    //     dispatch(
-    //       moveCard({
-    //         nextPlayer: nxtPlayer,
-    //         card,
-    //         draw,
-    //         cardsToDraw,
-    //       })
-    //     );
-    //     setTimeout(() => dispatch(movePlayer()), 500);
-    //   }
-    // );
-    // dispatch(setPlayerId(BotsServer.joinPlayer(data.players[3] as Player)));
-
-    setTimeout(() => { setReady(true); readyToServer() }, 1000)
+    setTimeout(readyToServer, 2000)
     onMove(({ card, draw, cardsToDraw, nxtPlayer }: IMoveEvent) => {
 
       dispatch(
@@ -68,25 +40,29 @@ export default function Game() {
       setTimeout(() => dispatch(movePlayer()), 500);
     })
 
+    onFinishGame((players: Player[]) => {
+      setFinished(true);
+      setPlayersOrder(players);
+    })
+
     return () => {
       leaveServer();
+      removeAllListeners();
     }
   }, []);
 
   return (
     <div>
       <AnimateSharedLayout>
-        {ready && (
-          <>
-            <TableStack />
-            <TopStack />
-            <LeftStack />
-            <RightStack />
-            <PlayerStack />
-            <DrawingStack />
-          </>
-        )}
+        <TableStack />
+        <TopStack />
+        <LeftStack />
+        <RightStack />
+        <PlayerStack />
+        <DrawingStack />
       </AnimateSharedLayout>
+
+      {finished && <Scoreboard players={playersOrder} />}
     </div>
   );
 }

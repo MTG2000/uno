@@ -12,6 +12,7 @@
 
   --primary: #020f6c;
   --secondary: cyan;
+  --panel-bg: rgba(0, 0, 0, 0.3);
 
   --cardWidth: 100px;
   --cardWidthBigger: 130px;
@@ -50,7 +51,7 @@ body {
 }
 
 * {
-  font-family: inherit;
+  font-family: Audiowide !important;
 }
 
 code {

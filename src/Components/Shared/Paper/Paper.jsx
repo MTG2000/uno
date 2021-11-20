@@ -2,7 +2,7 @@ import Grid from "@mui/material/Grid";
 import styled from "styled-components";
 
 const Paper = styled.div`
-  background-color: rgba(0, 0, 0, 0.3);
+  background: var(--panel-bg);
   margin: 20vh 5vw;
   padding: 75px 42px 64px;
   text-align: center;

@@ -44,7 +44,7 @@ const Root = styled.div`
       transform: translate(-50%, -50%);
       color: var(--color);
       font-size: var(--fontBig);
-      font-family: sans-serif;
+      font-family: sans-serif !important;
       font-weight: bold;
       text-shadow: 5px 5px black;
       -webkit-text-stroke: black 2px;
@@ -61,10 +61,11 @@ const Root = styled.div`
     .value-small {
       position: absolute;
       color: white;
-      -webkit-text-stroke: black 2px;
+      -webkit-text-stroke: black 1.5px;
       font-weight: bold;
       font-size: var(--fontSmall);
       font-style: italic;
+      font-family: sans-serif !important;
 
       &.value-tl {
         top: 14px;
