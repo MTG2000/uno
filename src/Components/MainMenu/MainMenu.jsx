@@ -9,6 +9,8 @@ const style = {
 };
 
 const MainMenu = () => {
+  const onPlayOffline = () => {};
+
   return (
     <Paper key="main-menu">
       <Grid container alignItems="center" justifyContent="center" spacing={4}>
@@ -24,23 +26,25 @@ const MainMenu = () => {
           sx={12}
         >
           <Grid item xs={12} md={5}>
-            <Link style={{ textDecoration: "none" }} to="/create-server">
-              <Button style={{ width: "80%" }}>
-                <img src="assets/icons/tv.svg" alt="" />
-                <Typography>Create A Game</Typography>
-              </Button>
-            </Link>
+            <Button disabled style={{ width: "80%" }} href="/create-server">
+              <img src="assets/icons/add.svg" alt="" />
+              <Typography>Create A Game</Typography>
+            </Button>
           </Grid>
           <Grid item sx={{ display: { xs: "none", md: "initial" } }} md={2}>
             <Typography>OR</Typography>
           </Grid>
           <Grid item xs={12} md={5}>
-            <Link style={{ textDecoration: "none" }} to="/join-server">
-              <Button style={{ width: "80%" }}>
-                <img src="assets/icons/add.svg" alt="" />
-                <Typography>Join A Game</Typography>
-              </Button>
-            </Link>
+            <Button disabled style={{ width: "80%" }} href="/join-server">
+              <img src="assets/icons/glob.svg" alt="" />
+              <Typography>Join A Game</Typography>
+            </Button>
+          </Grid>
+          <Grid item xs={12} md={5} mt={3}>
+            <Button style={{ width: "80%" }} href="/join-server">
+              <img src="assets/icons/tv.svg" alt="" />
+              <Typography>Play with PC</Typography>
+            </Button>
           </Grid>
         </Grid>
         <Grid item container alignItems="center" justifyContent="center" mt={6}>

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "../../../utils/hooks";
 import { ready } from "../../../stores/features/gameSlice";
-import { move } from "../../../api/api";
+import API from "../../../api/API";
 
 const variants = {
   init: { x: 0, y: 0 },
@@ -49,7 +49,7 @@ export default function DrawingStack() {
   const [gameStarted, setGameStarted] = useState(false);
 
   const handleClick = () => {
-    if (currentPlayer === 0) move(true);
+    if (currentPlayer === 0) API.move(true);
   };
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 export interface Player {
   id: string;
   name: string;
-  avatar: string;
+  img: string;
   cards: Card[];
   isBot?: boolean;
 }
@@ -16,4 +16,11 @@ export interface Card {
   rotationY?: number;
   playable?: boolean;
   forPlayer?: number;
+}
+
+export interface GameServer {
+  id: string;
+  name: string;
+  isPrivate: boolean;
+  cntPlayers: string;
 }

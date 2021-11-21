@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Image from "../Image/Image";
 import { motion } from "framer-motion";
 import BotsServer from "../../../BotsServer/BotsServer";
-import { move } from "../../../api/api";
+import API from "../../../api/API";
 
 const Root = styled.div`
   --color: var(--${(props) => props.color});
@@ -144,7 +144,7 @@ export default function Card({
   disableShadow = false,
 }) {
   const onClick = () => {
-    if (playable) move(false, id);
+    if (playable) API.move(false, id);
   };
 
   const getFrontContent = () => {

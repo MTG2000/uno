@@ -9,9 +9,9 @@ import TextField from "../Shared/TextField/TextField";
 import Typography from "../Shared/Typography/Typography";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getServers, joinServer } from "../../api/api";
 import { useDispatch } from "../../utils/hooks";
 import { setPlayerId } from "../../stores/features/gameSlice";
+import API from "../../api/API";
 
 const CTableRow = styled.div`
   display: flex;
@@ -47,11 +47,11 @@ const JoinServer = () => {
 
   React.useEffect(() => {
     (async () => {
-      const servers = await getServers();
+      const servers = await API.getServers();
       setServers(servers);
     })();
     const interval = setInterval(async () => {
-      const servers = await getServers();
+      const servers = await API.getServers();
       setServers(servers);
     }, 4000);
 
@@ -60,7 +60,7 @@ const JoinServer = () => {
 
   const handleJoinServer = async () => {
     const serverId = servers[selectedServer].id;
-    const playerId = await joinServer(serverId, password);
+    const playerId = await API.joinServer(serverId, password);
     dispatch(setPlayerId(playerId));
     navigate("/waiting-lobby");
   };

@@ -5,18 +5,15 @@ import { useEffect, useState } from "react";
 import LeftStack from "./LeftStack/LeftStack.jsx";
 import RightStack from "./RightStack/RightStack.jsx";
 import TopStack from "./TopStack/TopStack.jsx";
-import {
-  IMoveEvent,
-} from "../../BotsServer/BotsServer";
 import DrawingStack from "./DrawingStack/DrawingStack.jsx";
 import { useDispatch } from "../../utils/hooks";
 import {
   moveCard,
   movePlayer,
 } from "../../stores/features/gameSlice";
-import { leaveServer, onFinishGame, onMove, readyToServer, removeAllListeners } from "../../api/api.js";
 import Scoreboard from "./Scoreboard/Scoreboard.jsx";
 import { Player } from "../../utils/interfaces.js";
+import API from "../../api/API";
 
 export default function Game() {
   const dispatch = useDispatch();
@@ -25,9 +22,10 @@ export default function Game() {
 
   useEffect(() => {
 
-
-    setTimeout(readyToServer, 2000)
-    onMove(({ card, draw, cardsToDraw, nxtPlayer }: IMoveEvent) => {
+    setTimeout(() => {
+      API.emitReady()
+    }, 2000)
+    API.onMove(({ card, draw, cardsToDraw, nxtPlayer }) => {
 
       dispatch(
         moveCard({
@@ -40,14 +38,13 @@ export default function Game() {
       setTimeout(() => dispatch(movePlayer()), 500);
     })
 
-    onFinishGame((players: Player[]) => {
+    API.onFinishGame((players: Player[]) => {
       setFinished(true);
       setPlayersOrder(players);
     })
 
     return () => {
-      leaveServer();
-      removeAllListeners();
+      API.leaveServer();
     }
   }, []);
 
