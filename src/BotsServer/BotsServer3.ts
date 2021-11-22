@@ -1,7 +1,7 @@
+import data from "./data.json";
 import { EventsObject } from "../utils/EventsObject";
 import { shuffle, wrapMod } from "../utils/helpers";
 import { Card, Player } from "../utils/interfaces";
-import data from "./data.json";
 
 export interface IMoveEvent {
   curPlayer: number;
@@ -17,24 +17,15 @@ export interface IStartEvent {
   playerId: string;
 }
 
-export default class BotsServer extends EventsObject {
+class BotsServer extends EventsObject {
   players: Player[] = [];
-  curPlayer = 0;
-  direction = 1;
+  curPlayer: number = 0;
+  direction: 1 | -1 = 1;
   tableStk: Card[] = [];
   drawingStk: Card[] = [];
-  sumDrawing = 0;
-  lastPlayerDrew = false;
+  sumDrawing: number = 0;
+  lastPlayerDrawed: boolean = false;
   playersFinished: number[] = [];
-  gameRunning = false;
-  numberOfPlayers = 4;
-
-  botTimeout = null;
-
-  constructor(numberOfPlayers = 4) {
-    super();
-    this.numberOfPlayers = numberOfPlayers;
-  }
 
   init() {
     this.players = [];
@@ -44,56 +35,42 @@ export default class BotsServer extends EventsObject {
     this.drawingStk = [];
     this.sumDrawing = 0;
     this.playersFinished = [];
-    this.lastPlayerDrew = false;
-    this.gameRunning = false;
+    this.lastPlayerDrawed = false;
   }
 
-  joinPlayer(player: Player) {
-    const playerId = this.players.length.toString();
-
+  joinPlayer(player: Player, isBot: boolean = false) {
     this.players.push({
       ...player,
-      id: playerId,
+      id: (this.players.length + 1).toString(),
       cards: [],
+      isBot,
     });
-
-    return playerId;
-  }
-
-  addBots() {
-    const numToAdd = this.numberOfPlayers - this.players.length;
-    for (let i = 0; i < numToAdd; i++) {
-      const bot = data.players[i];
-      const playerId = this.players.length.toString();
-      this.players.push({
-        ...bot,
-        id: playerId,
-        cards: [],
-        isBot: true,
-      });
-    }
-    this.fireEvent("players-changed", this.players);
-    if (this.players.length === this.numberOfPlayers)
+    if (this.players.length === 4)
       setTimeout(() => {
         this.start();
       }, 1000);
+    return this.players.length.toString();
   }
 
   start() {
-    const cards = [...data.cards] as Card[];
+    const cards = [...data.cards];
     shuffle(cards);
     shuffle(this.players);
     const NUM_CARDS = 7;
     this.players.forEach((player, idx) => {
-      player.cards = cards.slice(idx * NUM_CARDS, (idx + 1) * NUM_CARDS);
+      player.cards = cards.slice(
+        idx * NUM_CARDS,
+        (idx + 1) * NUM_CARDS
+      ) as Card[];
     });
     this.drawingStk = cards.slice(
       this.players.length * NUM_CARDS,
       cards.length
-    );
+    ) as Card[];
 
-    this.fireEvent("game-init", {
-      cards: this.players.find((p) => !p.isBot)?.cards,
+    this.fireEvent("start", {
+      cards: this.players.filter((p) => !p.isBot)[0].cards,
+      playerId: this.players.filter((p) => !p.isBot)[0].id,
       players: this.players.map((p) => ({ ...p, cards: [] })),
     });
   }
@@ -102,17 +79,14 @@ export default class BotsServer extends EventsObject {
     if (this.players[this.curPlayer].isBot) this.moveBot();
   }
 
-  move(draw: boolean | null, cardId: string | null) {
+  move(draw: boolean, card: Card | null) {
     let moveEventObj: IMoveEvent = { nxtPlayer: 0, curPlayer: 0 };
-    let card: Card | undefined;
 
-    if (cardId) card = getCardById(cardId) as Card;
-
-    if (card && !canPlayCard(this.tableStk[0], card, this.lastPlayerDrew))
+    if (card && !canPlayCard(this.tableStk[0], card, this.lastPlayerDrawed))
       return false;
 
     if (draw) {
-      let drawCnt = 1;
+      let drawCnt = 3;
       if (this.sumDrawing) {
         drawCnt = this.sumDrawing;
         this.sumDrawing = 0;
@@ -130,7 +104,7 @@ export default class BotsServer extends EventsObject {
         .concat(this.players[this.curPlayer].cards);
 
       this.drawingStk = this.drawingStk.slice(drawCnt, this.drawingStk.length);
-      this.lastPlayerDrew = true;
+      this.lastPlayerDrawed = true;
     }
 
     let nxtPlayer = this.getNextPlayer(card);
@@ -146,28 +120,22 @@ export default class BotsServer extends EventsObject {
       moveEventObj.card = card;
       this.players[this.curPlayer].cards = this.players[
         this.curPlayer
-      ].cards.filter((c) => c.id !== card?.id);
-      this.lastPlayerDrew = false;
+      ].cards.filter((c) => c.id !== card.id);
+      this.lastPlayerDrawed = false;
 
       // Check if game finished
       if (this.players[this.curPlayer].cards.length === 0)
         this.playersFinished.push(this.curPlayer);
-      if (this.playersFinished.length === this.players.length - 1) {
-        this.playersFinished.push(nxtPlayer);
+      if (this.playersFinished.length === this.players.length - 1)
         this.finishGame();
-        this.fireEvent("move", moveEventObj as IMoveEvent);
-        return;
-      }
     }
 
     this.curPlayer = nxtPlayer;
-
     this.fireEvent("move", moveEventObj as IMoveEvent);
-
     if (this.players[this.curPlayer].isBot) this.moveBot();
   }
 
-  getNextPlayer(card?: Card) {
+  getNextPlayer(card: Card | null) {
     let nxtPlayer = this.curPlayer;
 
     if (card?.action === "reverse") this.direction *= -1;
@@ -197,8 +165,8 @@ export default class BotsServer extends EventsObject {
       for (let i = 0; i < this.players[this.curPlayer].cards.length; i++) {
         const card = this.players[this.curPlayer].cards[i];
 
-        if (canPlayCard(this.tableStk[0], card, this.lastPlayerDrew))
-          return this.move(false, card.id as string);
+        if (canPlayCard(this.tableStk[0], card, this.lastPlayerDrawed))
+          return this.move(false, card);
       }
 
       return this.move(true, null);
@@ -206,23 +174,20 @@ export default class BotsServer extends EventsObject {
   }
 
   finishGame() {
-    const playersFinishingOrder = this.playersFinished.map(
-      (idx) => this.players[idx]
-    );
-
-    this.init();
-    this.fireEvent("finish-game", playersFinishingOrder);
+    this.fireEvent("finish", {
+      players: this.playersFinished.map((idx) => this.players[idx]), //return players array in order they finished
+    });
   }
 }
 
 export function canPlayCard(
   oldCard: Card,
   newCard: Card,
-  lastPlayerDrew: boolean
+  lastPlayerDrawed?: boolean
 ) {
   const isOldDawingCard =
     oldCard?.action && oldCard.action.indexOf("draw") !== -1;
-  const haveToDraw = isOldDawingCard && !lastPlayerDrew;
+  const haveToDraw = isOldDawingCard && !lastPlayerDrawed;
   const isNewDawingCard =
     newCard?.action && newCard.action.indexOf("draw") !== -1;
 
@@ -244,5 +209,4 @@ export function canPlayCard(
 
   return false;
 }
-
-const getCardById = (id: string) => data.cards.find((c) => c.id === id);
+export default BotsServer;

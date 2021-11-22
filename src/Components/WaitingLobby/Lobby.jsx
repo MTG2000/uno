@@ -6,9 +6,9 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Loding from "./Loding";
 import styled from "styled-components";
-import { useDispatch } from "../../utils/hooks";
-import { init } from "../../stores/features/gameSlice";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "../../utils/hooks";
+import { init, setInLobby } from "../../stores/features/gameSlice";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import API from "../../api/API";
 
 const Span = styled.span`
@@ -21,11 +21,15 @@ const Span = styled.span`
 const Lobby = () => {
   const [players, setPlayers] = React.useState([]);
   const [ready, setReady] = React.useState(false);
+  const inLobby = useSelector((state) => state.game.inLobby);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    if (!inLobby) return;
+
     let timeout = null;
     let unsubInit = null;
     (async () => {
@@ -42,8 +46,12 @@ const Lobby = () => {
     return () => {
       if (timeout) clearTimeout(timeout);
       if (unsubInit) unsubInit();
+      dispatch(setInLobby(false));
     };
-  }, []);
+  }, [dispatch, navigate]);
+
+  if (location.pathname === "/waiting-lobby" && !inLobby)
+    return <Navigate replace to="/main-menu" />;
 
   return (
     <Paper>
@@ -59,7 +67,16 @@ const Lobby = () => {
             Joined ( <Span>{players.length}</Span>/4 )
           </Typography>
         </Grid>
-        <Grid item container alignItems="center" spacing={0.5} xs={12}>
+        <Grid
+          item
+          container
+          flexWrap="nowrap"
+          alignItems="center"
+          justifyContent="center"
+          spacing={0.5}
+          gap={6}
+          xs={12}
+        >
           {players.map((player) => {
             return (
               <Stack
@@ -67,7 +84,6 @@ const Lobby = () => {
                 justifyContent="center"
                 alignItems="center"
                 spacing={1}
-                sx={{ marginInlineEnd: 12 }}
               >
                 <Avatar seed={`${player.name}${player.img}`} />
                 <Typography>{player.name}</Typography>

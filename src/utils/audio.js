@@ -1,14 +1,20 @@
 import { EventsObject } from "./EventsObject";
 
-class GameAudio extends EventsObject {
+class _GameAudio extends EventsObject {
   audioTracks = {
     //   Put all the game music and audio effects here
-    name: "url",
+    music: "/assets/audio/bg-music.mp3",
+    shuffle: "/assets/audio/shuffle.mp3",
+    play: "/assets/audio/play.mp3",
+    draw: "/assets/audio/draw.mp3",
   };
   musicVolume = 1;
   effectsVolume = 1;
 
+  musicPlaying;
+
   constructor() {
+    super();
     this.cntAudio = Object.keys(this.audioTracks).length;
     this.cntLoadedAudio = 0;
   }
@@ -16,7 +22,11 @@ class GameAudio extends EventsObject {
   preload() {
     for (const url of Object.values(this.audioTracks)) {
       var audio = new Audio();
-      audio.addEventListener("canplaythrough", this.loadedAudio, false);
+      audio.addEventListener(
+        "canplaythrough",
+        () => this.loadedAudio.apply(this),
+        false
+      );
       audio.src = url;
     }
   }
@@ -31,18 +41,24 @@ class GameAudio extends EventsObject {
     if (!this.audioTracks[name])
       throw new Error("No Audio Track with this name");
 
-    var audio = new Audio(this.audioTracks[name]);
-    audio.volume = this.musicVolume;
-    audio.play();
+    if (this.musicPlaying) return;
+    this.musicPlaying = new Audio(this.audioTracks[name]);
+    this.musicPlaying.volume = this.musicVolume * 0.5;
+    this.musicPlaying.play();
+    this.musicPlaying.loop = true;
   }
 
-  playAudio(name) {
+  playAudio(name, reps = 1) {
     if (!this.audioTracks[name])
       throw new Error("No Audio Track with this name");
 
-    var audio = new Audio(this.audioTracks[name]);
-    audio.volume = this.effectsVolume;
-    audio.play();
+    for (let i = 0; i < reps; i++) {
+      setTimeout(() => {
+        let audio = new Audio(this.audioTracks[name]);
+        audio.volume = this.effectsVolume;
+        audio.play();
+      }, 200 * i);
+    }
   }
 
   changeMusicVolume(newVolume) {
@@ -53,5 +69,7 @@ class GameAudio extends EventsObject {
     this.effectsVolume = newVolume;
   }
 }
+
+const GameAudio = new _GameAudio();
 
 export default GameAudio;

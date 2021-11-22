@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Image from "../Image/Image";
 import { motion } from "framer-motion";
-import BotsServer from "../../../BotsServer/BotsServer";
 import API from "../../../api/API";
 
 const Root = styled.div`
@@ -133,8 +132,8 @@ const Root = styled.div`
 
 export default function Card({
   id = "",
-  color = "green",
-  digit = 4,
+  color = "",
+  digit,
   action = "",
   flip = false,
   rotationY = 180,

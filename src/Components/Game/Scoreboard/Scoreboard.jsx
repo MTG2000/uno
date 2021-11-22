@@ -4,35 +4,12 @@ import { Grid, Typography } from "@mui/material";
 import Button from "../../Shared/Button/Button";
 import { Link } from "react-router-dom";
 
-const playersA = [
-  {
-    id: "1",
-    name: "Mikasa",
-    img: "234",
-  },
-  {
-    id: "3",
-    name: "Chara",
-    img: "123",
-  },
-  {
-    id: "4",
-    name: "Buddy",
-    img: "321",
-  },
-  {
-    id: "2",
-    name: "Hamza",
-    img: "333",
-  },
-];
-
 const Root = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: var(--panel-bg);
+  background: rgba(0, 0, 0, 0.8);
   color: white;
   padding: 40px 70px;
   border-radius: 12px;
@@ -68,10 +45,10 @@ const Root = styled.div`
 export default function Scoreboard({ players }) {
   return (
     <Root>
-      <Typography variant="h2" textAlign="center" mb={6}>
+      <Typography variant="h2" textAlign="center" fontWeight={600} mb={6}>
         Game Finished!!
       </Typography>
-      {playersA.map((p, idx) => (
+      {players.map((p, idx) => (
         <div className="row" key={idx}>
           <div className="order">{idx + 1}</div>
           <div className="img">
@@ -82,7 +59,7 @@ export default function Scoreboard({ players }) {
       ))}
 
       <Grid container justifyContent="center" mt={6}>
-        <Link to="/join-server">
+        <Link to="/main-menu">
           <Button onClick={() => {}}>Play Again</Button>
         </Link>
       </Grid>

@@ -3,13 +3,25 @@ import Grid from "@mui/material/Grid";
 import Paper from "../Shared/Paper/Paper";
 import Button from "../Shared/Button/Button";
 import Typography from "../Shared/Typography/Typography";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import API from "../../api/API";
+import { useDispatch } from "../../utils/hooks";
+import { setInLobby, setPlayerId } from "../../stores/features/gameSlice";
 const style = {
   color: "#fff",
 };
 
 const MainMenu = () => {
-  const onPlayOffline = () => {};
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const onPlayOffline = async () => {
+    API.setOnlineMode(false);
+    const playerId = await API.joinServer();
+    dispatch(setPlayerId(playerId));
+    dispatch(setInLobby(true));
+    navigate("/waiting-lobby");
+  };
 
   return (
     <Paper key="main-menu">
@@ -26,7 +38,7 @@ const MainMenu = () => {
           sx={12}
         >
           <Grid item xs={12} md={5}>
-            <Button disabled style={{ width: "80%" }} href="/create-server">
+            <Button style={{ width: "80%" }} href="/create-server">
               <img src="assets/icons/add.svg" alt="" />
               <Typography>Create A Game</Typography>
             </Button>
@@ -35,13 +47,13 @@ const MainMenu = () => {
             <Typography>OR</Typography>
           </Grid>
           <Grid item xs={12} md={5}>
-            <Button disabled style={{ width: "80%" }} href="/join-server">
+            <Button style={{ width: "80%" }} href="/join-server">
               <img src="assets/icons/glob.svg" alt="" />
               <Typography>Join A Game</Typography>
             </Button>
           </Grid>
           <Grid item xs={12} md={5} mt={3}>
-            <Button style={{ width: "80%" }} href="/join-server">
+            <Button style={{ width: "80%" }} onClick={onPlayOffline}>
               <img src="assets/icons/tv.svg" alt="" />
               <Typography>Play with PC</Typography>
             </Button>

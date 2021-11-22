@@ -545,22 +545,22 @@
         {
             "id": "1",
             "name": "Levi",
-            "avatar": "sss"
+            "img": "sss"
         },
         {
             "id": "3",
             "name": "Mikasa",
-            "avatar": "sss"
+            "img": "sss"
         },
         {
             "id": "4",
             "name": "Armin",
-            "avatar": "sss"
+            "img": "sss"
         },
         {
             "id": "2",
             "name": "Eren",
-            "avatar": "sss"
+            "img": "sss"
         }
     ],
     "playerId": "2"

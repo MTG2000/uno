@@ -14,6 +14,8 @@ interface StoreState {
   drawingStack: Card[];
   players: Player[];
   lastPlayerDrawed: boolean;
+  inGame: boolean;
+  inLobby: boolean;
 }
 
 let cardLayoutIdIdx = 111;
@@ -27,6 +29,7 @@ function generateDrawingCards(cnt: number) {
 const initialState = {
   tableStack: [] as Card[],
   drawingStack: [] as Card[],
+  inGame: false,
 } as StoreState;
 
 export const gameSlice = createSlice({
@@ -45,6 +48,7 @@ export const gameSlice = createSlice({
       state.tableStack = [];
       state.lastPlayerDrawed = false;
       state.tableStack = [];
+      state.inGame = true;
 
       // Find my player and re-order
       let playersFinal: Player[] = [];
@@ -98,6 +102,15 @@ export const gameSlice = createSlice({
         isNullOrUndefined(c.forPlayer)
       );
     },
+
+    stopGame(state) {
+      state.inGame = false;
+    },
+
+    setInLobby(state, action: PayloadAction<boolean>) {
+      state.inLobby = action.payload;
+    },
+
     moveCard(
       state,
       action: PayloadAction<{
@@ -220,8 +233,10 @@ export const gameSlice = createSlice({
 export const {
   init,
   ready,
+  stopGame,
   moveCard,
   movePlayer,
+  setInLobby,
   setPlayerId,
 } = gameSlice.actions;
 

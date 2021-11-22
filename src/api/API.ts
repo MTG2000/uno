@@ -4,11 +4,12 @@ import { ServerInterface } from "../Server/ServerInterface";
 import { Player, GameServer, Card } from "../utils/interfaces";
 
 export class _API implements ServerInterface {
-  isOnline = true;
+  isOnline = false;
   _server: ServerInterface;
 
   constructor() {
-    this._server = new OnlineServer();
+    if (this.isOnline) this._server = new OnlineServer();
+    else this._server = new OfflineServer();
   }
 
   setOnlineMode(isOnline: boolean) {
@@ -27,13 +28,10 @@ export class _API implements ServerInterface {
     return this._server.createServer(serverName, serverPassword);
   }
   joinServer(serverId: string, serverPassword?: string): Promise<string> {
-    console.log(this._server);
-
     return this._server.joinServer(serverId, serverPassword);
   }
-  emitReady(): void {
-    console.log(this._server);
 
+  emitReady(): void {
     this._server.emitReady();
   }
   leaveServer(): void {

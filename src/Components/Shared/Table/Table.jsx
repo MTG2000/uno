@@ -35,6 +35,7 @@ const CTableCell = styled.p`
 const CTableBody = styled.div`
   display: grid;
   grid-template-columns: 1fr;
+  grid-auto-rows: minmax(min-content, max-content);
   padding: 0 20px 20px;
 `;
 

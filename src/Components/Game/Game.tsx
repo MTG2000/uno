@@ -6,26 +6,31 @@ import LeftStack from "./LeftStack/LeftStack.jsx";
 import RightStack from "./RightStack/RightStack.jsx";
 import TopStack from "./TopStack/TopStack.jsx";
 import DrawingStack from "./DrawingStack/DrawingStack.jsx";
-import { useDispatch } from "../../utils/hooks";
+import { useDispatch, useSelector } from "../../utils/hooks";
 import {
   moveCard,
   movePlayer,
+  stopGame,
 } from "../../stores/features/gameSlice";
 import Scoreboard from "./Scoreboard/Scoreboard.jsx";
 import { Player } from "../../utils/interfaces.js";
 import API from "../../api/API";
+import { Navigate, useLocation } from "react-router";
+import GameAudio from "../../utils/audio.js";
 
 export default function Game() {
   const dispatch = useDispatch();
   const [finished, setFinished] = useState(false)
-  const [playersOrder, setPlayersOrder] = useState<Player[]>([])
+  const [playersOrder, setPlayersOrder] = useState<Player[]>([]);
+  const inGame = useSelector(state => state.game.inGame)
+
 
   useEffect(() => {
-
-    setTimeout(() => {
+    const timeoutReady = setTimeout(() => {
       API.emitReady()
     }, 2000)
     API.onMove(({ card, draw, cardsToDraw, nxtPlayer }) => {
+      console.log(cardsToDraw);
 
       dispatch(
         moveCard({
@@ -35,6 +40,9 @@ export default function Game() {
           cardsToDraw,
         })
       );
+      if (draw) {
+        GameAudio.playAudio('draw', draw);
+      } else GameAudio.playAudio('play')
       setTimeout(() => dispatch(movePlayer()), 500);
     })
 
@@ -45,8 +53,13 @@ export default function Game() {
 
     return () => {
       API.leaveServer();
+      dispatch(stopGame());
+      clearTimeout(timeoutReady)
     }
   }, []);
+
+
+  if (!inGame) return <Navigate replace to="/main-menu" />;
 
   return (
     <div>

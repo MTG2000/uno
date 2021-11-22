@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "../../../utils/hooks";
 import { ready } from "../../../stores/features/gameSlice";
 import API from "../../../api/API";
+import GameAudio from "../../../utils/audio";
 
 const variants = {
   init: { x: 0, y: 0 },
@@ -53,6 +54,7 @@ export default function DrawingStack() {
   };
 
   useEffect(() => {
+    setTimeout(() => GameAudio.playAudio("shuffle"), 1800);
     setTimeout(() => {
       dispatch(ready());
       setGameStarted(true);

@@ -15,7 +15,11 @@ export class EventsObject {
     if (index !== -1) this.events[name].splice(index, 1);
   };
 
-  fireEvent(name, args) {
+  removeAllListeners() {
+    this.events = {};
+  }
+
+  fireEvent(name, ...args) {
     if (!this.events.hasOwnProperty(name)) return;
 
     if (!args) args = [];
@@ -24,7 +28,7 @@ export class EventsObject {
       l = evs.length;
 
     for (var i = 0; i < l; i++) {
-      evs[i].call(null, { ...args });
+      evs[i](...args);
     }
   }
 }

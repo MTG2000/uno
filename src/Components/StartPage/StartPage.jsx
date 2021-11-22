@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
+import GameAudio from "../../utils/audio";
 
 const Root = styled.div`
   min-height: 100vh;
@@ -33,6 +34,7 @@ export default function StartPage() {
   const navigate = useNavigate();
 
   const onClick = () => {
+    GameAudio.playMusic("music");
     if (localStorage.getItem("playerName")) navigate("/main-menu");
     else navigate("/create-user");
   };
