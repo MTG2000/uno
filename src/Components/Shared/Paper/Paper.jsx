@@ -36,7 +36,7 @@ const APaper = ({ children, ...props }) => {
     >
       <Grid item xs={12} md={10} lg={8}>
         <Paper>
-          <img className="uno-img" src="/imges/unoLogo.png" alt="" />
+          <img className="uno-img" src="assets/images/uno-logo.png" alt="" />
           {children}
         </Paper>
       </Grid>

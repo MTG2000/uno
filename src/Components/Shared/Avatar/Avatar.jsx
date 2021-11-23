@@ -1,21 +1,32 @@
 import React from "react";
 import styled from "styled-components";
-const Cavatar = styled.img`
+const Cavatar = styled.div`
   width: 100%;
+  min-width: 100px;
   max-width: 120px;
-
   border-radius: 50%;
+  border: 1px solid rgb(0 3 24);
+  position: relative;
+  padding-top: 100%;
+  box-shadow: 0px 0px 6px 3px rgb(23 25 41);
 
-  border: 2px solid rgb(2 15 108);
+  img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
 
-  outline: 1px solid #f3f2f1;
-  box-shadow: 0px 0px 6px 3px rgb(2 15 108);
-  object-fit: cover;
-  object-position: top;
+    object-fit: cover;
+    object-position: top;
+  }
 `;
 const Avatar = ({ seed }) => {
   return (
-    <Cavatar src={`https://avatars.dicebear.com/api/male/${seed}.svg`} alt="" />
+    <Cavatar>
+      <img src={`https://avatars.dicebear.com/api/male/${seed}.svg`} alt="" />
+    </Cavatar>
   );
 };
 

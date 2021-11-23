@@ -64,7 +64,7 @@ export default function Loading({ onLoaded }) {
         </>
       ) : (
         <>
-          <h2>Loading Game Assests...</h2>
+          <h2>Loading Game Assets...</h2>
           <p>{percentage}%</p>
         </>
       )}

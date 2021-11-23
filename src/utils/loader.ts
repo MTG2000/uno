@@ -4,6 +4,7 @@ import { EventsObject } from "./EventsObject";
 class _Loader extends EventsObject {
   imgs = [
     "assets/images/backside.png",
+    "assets/images/uno-logo.png",
     "assets/images/draw four-blank.png",
     "assets/images/draw two-blank.png",
     "assets/images/draw two-blue.png",
