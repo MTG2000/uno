@@ -154,14 +154,16 @@ export default function Card({
       return (
         <>
           <Image src={`assets/images/front-${color}.png`} ratio={590 / 418} />
-          <img src="assets/images/draw4.png" className="card-icon" />
+          <img src="assets/images/draw4.png" className="card-icon" alt="" />
           <img
             className="icon-small icon-tl"
             src={`assets/images/${action}-blank.png`}
+            alt=""
           />
           <img
             className="icon-small icon-br"
             src={`assets/images/${action}-blank.png`}
+            alt=""
           />
         </>
       );
@@ -173,14 +175,17 @@ export default function Card({
           <img
             src={`assets/images/${action}-${color}.png`}
             className="card-icon"
+            alt=""
           />
           <img
             className="icon-small icon-tl"
             src={`assets/images/${action}-blank.png`}
+            alt=""
           />
           <img
             className="icon-small icon-br"
             src={`assets/images/${action}-blank.png`}
+            alt=""
           />
         </>
       );

@@ -4,8 +4,6 @@ class _GameAudio {
   audioTracks = {};
   musicPlaying;
 
-  constructor() {}
-
   preload(audioTracks, onload) {
     this.audioTracks = audioTracks;
     for (const url of Object.values(this.audioTracks)) {

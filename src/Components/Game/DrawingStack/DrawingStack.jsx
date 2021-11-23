@@ -59,7 +59,7 @@ export default function DrawingStack() {
       dispatch(ready());
       setGameStarted(true);
     }, 2000);
-  }, []);
+  }, [dispatch]);
 
   const canHover = gameStarted && currentPlayer === 0;
   const highlight = canHover || !gameStarted;

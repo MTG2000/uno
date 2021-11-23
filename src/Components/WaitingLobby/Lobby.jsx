@@ -20,7 +20,7 @@ const Span = styled.span`
 
 const Lobby = () => {
   const [players, setPlayers] = React.useState([]);
-  const [ready, setReady] = React.useState(false);
+
   const inLobby = useSelector((state) => state.game.inLobby);
 
   const dispatch = useDispatch();
@@ -38,7 +38,6 @@ const Lobby = () => {
       API.onPlayersUpdated((players) => setPlayers(players));
       unsubInit = API.onGameInit(({ players, cards }) => {
         dispatch(init({ cards, players }));
-        setReady(true);
         timeout = setTimeout(() => navigate("/game"), 2000);
       });
     })();
@@ -48,7 +47,7 @@ const Lobby = () => {
       if (unsubInit) unsubInit();
       dispatch(setInLobby(false));
     };
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, inLobby]);
 
   if (location.pathname === "/waiting-lobby" && !inLobby)
     return <Navigate replace to="/main-menu" />;

@@ -6,15 +6,13 @@ import MainMenu from "./Components/MainMenu/MainMenu";
 import CreateServer from "./Components/CreateServer/CreateServer";
 import JoinServer from "./Components/JoinServer/JoinServer";
 import Lobby from "./Components/WaitingLobby/Lobby";
-
 import { Provider } from "react-redux";
 import { store } from "./stores/store";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import StartPage from "./Components/StartPage/StartPage";
 import { AnimatePresence } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import Loading from "./Components/Shared/Loading/Loading";
-import Loader from "./utils/loader";
 import GameAudio from "./utils/audio";
 import ErrorBoundary from "./Components/Shared/ErrorBoundary/ErrorBoundary";
 

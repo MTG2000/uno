@@ -37,7 +37,7 @@ export default function StartPage() {
       if (localStorage.getItem("playerName")) navigate("/main-menu");
       else navigate("/create-user");
     }, 3000);
-  }, []);
+  }, [navigate]);
 
   return (
     <Root

@@ -15,7 +15,7 @@ import {
 import Scoreboard from "./Scoreboard/Scoreboard.jsx";
 import { Player } from "../../utils/interfaces.js";
 import API from "../../api/API";
-import { Navigate, useLocation } from "react-router";
+import { Navigate, } from "react-router";
 import GameAudio from "../../utils/audio.js";
 
 export default function Game() {
@@ -30,7 +30,6 @@ export default function Game() {
       API.emitReady()
     }, 2000)
     API.onMove(({ card, draw, cardsToDraw, nxtPlayer }) => {
-      console.log(cardsToDraw);
 
       dispatch(
         moveCard({
@@ -56,7 +55,7 @@ export default function Game() {
       dispatch(stopGame());
       clearTimeout(timeoutReady)
     }
-  }, []);
+  }, [dispatch]);
 
 
   if (!inGame) return <Navigate replace to="/main-menu" />;
