@@ -16,6 +16,7 @@ import { useLocation } from "react-router-dom";
 import Loading from "./Components/Shared/Loading/Loading";
 import Loader from "./utils/loader";
 import GameAudio from "./utils/audio";
+import ErrorBoundary from "./Components/Shared/ErrorBoundary/ErrorBoundary";
 
 const Root = styled.div`
   min-height: 100vh;
@@ -43,35 +44,37 @@ function App() {
     <Root>
       <Provider store={store}>
         <AnimatePresence exitBeforeEnter>
-          <Routes location={location} key={location.key}>
-            <Route
-              key={"/create-user"}
-              path="/create-user"
-              element={<CreateUser />}
-            />
-            <Route
-              key={"/main-menu"}
-              path="/main-menu"
-              element={<MainMenu />}
-            />
-            <Route
-              key={"/create-server"}
-              path="/create-server"
-              element={<CreateServer />}
-            />
-            <Route
-              key={"/join-server"}
-              path="/join-server"
-              element={<JoinServer />}
-            />
-            <Route key={"/game"} path="/game" element={<Game />} />
-            <Route
-              key={"/waiting-lobby"}
-              path="/waiting-lobby"
-              element={<Lobby />}
-            />
-            <Route key={"/"} path="/" element={<StartPage />} />
-          </Routes>
+          <ErrorBoundary>
+            <Routes location={location} key={location.key}>
+              <Route
+                key={"/create-user"}
+                path="/create-user"
+                element={<CreateUser />}
+              />
+              <Route
+                key={"/main-menu"}
+                path="/main-menu"
+                element={<MainMenu />}
+              />
+              <Route
+                key={"/create-server"}
+                path="/create-server"
+                element={<CreateServer />}
+              />
+              <Route
+                key={"/join-server"}
+                path="/join-server"
+                element={<JoinServer />}
+              />
+              <Route key={"/game"} path="/game" element={<Game />} />
+              <Route
+                key={"/waiting-lobby"}
+                path="/waiting-lobby"
+                element={<Lobby />}
+              />
+              <Route key={"/"} path="/" element={<StartPage />} />
+            </Routes>
+          </ErrorBoundary>
         </AnimatePresence>
       </Provider>
     </Root>
