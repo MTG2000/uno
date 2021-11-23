@@ -1,9 +1,8 @@
 import { Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
-import GameAudio from "../../utils/audio";
 
 const Root = styled.div`
   min-height: 100vh;
@@ -33,20 +32,20 @@ export default function StartPage() {
 
   const navigate = useNavigate();
 
-  const onClick = () => {
-    GameAudio.playMusic("music");
-    if (localStorage.getItem("playerName")) navigate("/main-menu");
-    else navigate("/create-user");
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      if (localStorage.getItem("playerName")) navigate("/main-menu");
+      else navigate("/create-user");
+    }, 3000);
+  }, []);
 
   return (
     <Root
       as={motion.div}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, scale: 0.5 }}
+      exit={{ opacity: 0, x: -500 }}
       transition={{ duration: 0.7 }}
-      onClick={onClick}
     >
       <motion.div
         initial={{ y: "-100%", opacity: 0 }}
@@ -93,7 +92,7 @@ export default function StartPage() {
         }
         onAnimationComplete={() => setMounted(true)}
       >
-        Click anywhere to Start
+        Welcome to UNO The Game
       </Typography>
     </Root>
   );

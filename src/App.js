@@ -13,8 +13,9 @@ import { useEffect, useState } from "react";
 import StartPage from "./Components/StartPage/StartPage";
 import { AnimatePresence } from "framer-motion";
 import { useLocation } from "react-router-dom";
-import GameAudio from "./utils/audio";
 import Loading from "./Components/Shared/Loading/Loading";
+import Loader from "./utils/loader";
+import GameAudio from "./utils/audio";
 
 const Root = styled.div`
   min-height: 100vh;
@@ -29,16 +30,14 @@ const Root = styled.div`
 function App() {
   const [loadingAssets, setLoadingAssets] = useState(true);
 
-  useEffect(() => {
-    GameAudio.preload();
-    GameAudio.addEventListener("completed", () => {
-      setLoadingAssets(false);
-    });
-  }, []);
-
   const location = useLocation();
 
-  if (loadingAssets) return <Loading />;
+  const onLoaded = () => {
+    GameAudio.playMusic("music");
+    setLoadingAssets(false);
+  };
+
+  if (loadingAssets) return <Loading onLoaded={onLoaded} />;
 
   return (
     <Root>

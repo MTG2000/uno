@@ -9,8 +9,8 @@ const CTableContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 60px;
-  max-height: 35vh;
-  overflow-y: auto;
+  max-height: 500px;
+  overflow-y: scroll;
   ::-webkit-scrollbar {
     background-color: #07caea;
     border-radius: 0 1rem 1rem 0;

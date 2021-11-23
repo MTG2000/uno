@@ -69,10 +69,8 @@ const CreateUser = () => {
         </Grid>
         <Grid item xs={10}>
           {playerName && imgSeed && (
-            <Button>
-              <Link style={{ textDecoration: "none" }} to="/main-menu">
-                <Typography> Save & Go </Typography>
-              </Link>
+            <Button href="/main-menu">
+              <Typography> Save & Go </Typography>
             </Button>
           )}
         </Grid>

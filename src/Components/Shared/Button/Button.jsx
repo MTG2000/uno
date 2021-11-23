@@ -40,13 +40,13 @@ const Button = ({ children, href, ...props }) => {
   const navigate = useNavigate();
 
   const onClick = () => {
-    if (href && !props.disabled) navigate(href);
-
+    console.log(props.disabled);
     if (props.onClick) props.onClick();
+    if (href && !props.disabled) navigate(href);
   };
 
   return (
-    <Cbutton onClick={onClick} {...props}>
+    <Cbutton {...props} onClick={onClick}>
       {children}
     </Cbutton>
   );

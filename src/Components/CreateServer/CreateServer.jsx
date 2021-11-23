@@ -10,7 +10,7 @@ import API from "../../api/API.ts";
 
 import Typography from "../Shared/Typography/Typography";
 import { useDispatch } from "../../utils/hooks";
-import { setPlayerId } from "../../stores/features/gameSlice";
+import { setInLobby, setPlayerId } from "../../stores/features/gameSlice";
 
 const CreateServer = () => {
   const [serverName, setServerName] = React.useState("");
@@ -22,6 +22,7 @@ const CreateServer = () => {
   const handleCreateServer = async () => {
     const playerId = await API.createServer(serverName, serverPassword);
     dispatch(setPlayerId(playerId));
+    dispatch(setInLobby(true));
     navigate("/waiting-lobby");
   };
   return (

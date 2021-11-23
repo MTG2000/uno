@@ -1,40 +1,24 @@
-import { EventsObject } from "./EventsObject";
-
-class _GameAudio extends EventsObject {
-  audioTracks = {
-    //   Put all the game music and audio effects here
-    music: "/assets/audio/bg-music.mp3",
-    shuffle: "/assets/audio/shuffle.mp3",
-    play: "/assets/audio/play.mp3",
-    draw: "/assets/audio/draw.mp3",
-  };
+class _GameAudio {
   musicVolume = 1;
   effectsVolume = 1;
-
+  audioTracks = {};
   musicPlaying;
 
-  constructor() {
-    super();
-    this.cntAudio = Object.keys(this.audioTracks).length;
-    this.cntLoadedAudio = 0;
-  }
+  constructor() {}
 
-  preload() {
+  preload(audioTracks, onload) {
+    this.audioTracks = audioTracks;
     for (const url of Object.values(this.audioTracks)) {
       var audio = new Audio();
       audio.addEventListener(
         "canplaythrough",
-        () => this.loadedAudio.apply(this),
+        () => {
+          onload();
+        },
         false
       );
       audio.src = url;
     }
-  }
-
-  loadedAudio() {
-    this.cntLoadedAudio++;
-    this.fireEvent("progress", this.cntLoadedAudio / this.cntAudio);
-    if (this.cntLoadedAudio === this.cntAudio) this.fireEvent("completed");
   }
 
   playMusic(name) {

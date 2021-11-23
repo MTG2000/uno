@@ -46,18 +46,14 @@ const JoinServer = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
+    API.playOnline(true);
     (async () => {
-      // const servers = await API.getServers();
-      const servers = [
-        { id: 1, name: "SERVER 1", isPrivate: true },
-        { id: 2, name: "SERVER 2", isPrivate: true },
-        // { id: 3, name: "SERVER 3", isPrivate: false },
-      ];
+      const servers = await API.getServers();
       setServers(servers);
     })();
     const interval = setInterval(async () => {
       const servers = await API.getServers();
-      // setServers(servers);
+      setServers(servers);
     }, 4000);
 
     return () => clearInterval(interval);
@@ -102,62 +98,61 @@ const JoinServer = () => {
         </Grid>
         <Grid item xs={12}>
           <Table>
-            {servers
-              .filter((s) => (showPrivate ? true : !s.isPrivate))
-              .map((server, index) => {
-                return (
-                  <CTableRow
-                    key={index}
-                    onClick={() => {
-                      setSelectedServer(index);
-                      setSelectOne(true);
-                      setPassword("");
-                      if (server.isPrivate) setIsPrivate(true);
-                      else setIsPrivate(false);
-                    }}
-                    style={
-                      index === selectedServer && server.isPrivate
-                        ? {
-                            backgroundColor: "rgba(0,0,0,.5)",
-                            border: " 1px solid #fb0303",
-                            borderWidth: "0 0 3px 2px",
-                            borderRadius: "1rem",
-                            boxShadow: "inset 1px 0 5px 1px black",
-                          }
-                        : index === selectedServer
-                        ? {
-                            backgroundColor: "rgba(0,0,0,.5)",
-                            borderRadius: "1rem",
-                          }
-                        : {}
-                    }
-                  >
-                    {index === selectedServer && server.isPrivate ? (
-                      <>
-                        <CTableCell>{server.serverName}</CTableCell>
-                        <TextField
-                          type="password"
-                          placeholder="Enter the server password"
-                          style={{
-                            height: "100%",
-                            border: "none",
-                            background: "none",
-                            boxShadow: "none",
-                          }}
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <CTableCell>{server.name}</CTableCell>
-                        <CTableCell>{server.cntPlayers}</CTableCell>
-                        <CTableCell>{server.isPrivate ? "Yes" : ""}</CTableCell>
-                      </>
-                    )}
-                  </CTableRow>
-                );
-              })}
+            {servers.map((server, index) => {
+              console.log(server);
+              return (
+                <CTableRow
+                  key={index}
+                  onClick={() => {
+                    setSelectedServer(index);
+                    setSelectOne(true);
+                    setPassword("");
+                    if (server.isPrivate) setIsPrivate(true);
+                    else setIsPrivate(false);
+                  }}
+                  style={
+                    index === selectedServer && server.isPrivate
+                      ? {
+                          backgroundColor: "rgba(0,0,0,.5)",
+                          border: " 1px solid #fb0303",
+                          borderWidth: "0 0 3px 2px",
+                          borderRadius: "1rem",
+                          boxShadow: "inset 1px 0 5px 1px black",
+                        }
+                      : index === selectedServer
+                      ? {
+                          backgroundColor: "rgba(0,0,0,.5)",
+                          borderRadius: "1rem",
+                        }
+                      : {}
+                  }
+                >
+                  {index === selectedServer && server.isPrivate ? (
+                    <>
+                      <CTableCell>{server.serverName}</CTableCell>
+                      <TextField
+                        type="password"
+                        placeholder="Enter the server password"
+                        style={{
+                          height: "100%",
+                          border: "none",
+                          background: "none",
+                          boxShadow: "none",
+                        }}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <CTableCell>{server.name}</CTableCell>
+                      <CTableCell>{server.cntPlayers}</CTableCell>
+                      <CTableCell>{server.isPrivate ? "Yes" : ""}</CTableCell>
+                    </>
+                  )}
+                </CTableRow>
+              );
+            })}
           </Table>
         </Grid>
         <Grid item xs={12}>

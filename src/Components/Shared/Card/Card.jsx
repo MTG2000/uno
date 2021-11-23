@@ -148,20 +148,20 @@ export default function Card({
 
   const getFrontContent = () => {
     if (color === "black" && action === "wild")
-      return <Image src={`/assets/images/wild.png`} ratio={590 / 418} />;
+      return <Image src={`assets/images/wild.png`} ratio={590 / 418} />;
 
     if (color === "black")
       return (
         <>
-          <Image src={`/assets/images/front-${color}.png`} ratio={590 / 418} />
-          <img src="/assets/images/draw4.png" className="card-icon" />
+          <Image src={`assets/images/front-${color}.png`} ratio={590 / 418} />
+          <img src="assets/images/draw4.png" className="card-icon" />
           <img
             className="icon-small icon-tl"
-            src={`/assets/images/${action}-blank.png`}
+            src={`assets/images/${action}-blank.png`}
           />
           <img
             className="icon-small icon-br"
-            src={`/assets/images/${action}-blank.png`}
+            src={`assets/images/${action}-blank.png`}
           />
         </>
       );
@@ -169,24 +169,24 @@ export default function Card({
     if (action)
       return (
         <>
-          <Image src={`/assets/images/front-${color}.png`} ratio={590 / 418} />
+          <Image src={`assets/images/front-${color}.png`} ratio={590 / 418} />
           <img
-            src={`/assets/images/${action}-${color}.png`}
+            src={`assets/images/${action}-${color}.png`}
             className="card-icon"
           />
           <img
             className="icon-small icon-tl"
-            src={`/assets/images/${action}-blank.png`}
+            src={`assets/images/${action}-blank.png`}
           />
           <img
             className="icon-small icon-br"
-            src={`/assets/images/${action}-blank.png`}
+            src={`assets/images/${action}-blank.png`}
           />
         </>
       );
     return (
       <>
-        <Image src={`/assets/images/front-${color}.png`} ratio={590 / 418} />
+        <Image src={`assets/images/front-${color}.png`} ratio={590 / 418} />
         <p className="value">{digit}</p>
         <p className="value-small value-tl">{digit}</p>
         <p className="value-small value-br">{digit}</p>
@@ -218,7 +218,7 @@ export default function Card({
     >
       <div className="front">{getFrontContent()}</div>
       <div className="back">
-        <Image src={`/assets/images/backside.png`} ratio={590 / 418} />
+        <Image src={`assets/images/backside.png`} ratio={590 / 418} />
       </div>
     </Root>
   );

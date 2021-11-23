@@ -9,6 +9,8 @@ export class OnlineServer implements ServerInterface {
     return new Promise((res, rej) => {
       socket.emit("get-servers", null, (err: any, servers: GameServer[]) => {
         if (err) return rej(err);
+        console.log(servers);
+
         res(servers);
       });
     });

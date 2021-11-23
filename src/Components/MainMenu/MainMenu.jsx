@@ -15,8 +15,12 @@ const MainMenu = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const onPlayOnline = () => {
+    API.playOnline(true);
+  };
+
   const onPlayOffline = async () => {
-    API.setOnlineMode(false);
+    API.playOnline(false);
     const playerId = await API.joinServer();
     dispatch(setPlayerId(playerId));
     dispatch(setInLobby(true));
@@ -38,7 +42,12 @@ const MainMenu = () => {
           sx={12}
         >
           <Grid item xs={12} md={5}>
-            <Button style={{ width: "80%" }} href="/create-server">
+            <Button
+              disabled={!API.isOnline}
+              style={{ width: "80%" }}
+              href="/create-server"
+              onClick={onPlayOnline}
+            >
               <img src="assets/icons/add.svg" alt="" />
               <Typography>Create A Game</Typography>
             </Button>
@@ -47,7 +56,12 @@ const MainMenu = () => {
             <Typography>OR</Typography>
           </Grid>
           <Grid item xs={12} md={5}>
-            <Button style={{ width: "80%" }} href="/join-server">
+            <Button
+              disabled={!API.isOnline}
+              style={{ width: "80%" }}
+              href="/join-server"
+              onClick={onPlayOnline}
+            >
               <img src="assets/icons/glob.svg" alt="" />
               <Typography>Join A Game</Typography>
             </Button>

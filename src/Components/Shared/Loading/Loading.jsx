@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import GameAudio from "../../../utils/audio";
+import Loader from "../../../utils/loader";
 
 const Root = styled.div`
   width: 100vw;
@@ -12,14 +12,16 @@ const Root = styled.div`
   justify-content: center;
   align-items: center;
 
+  cursor: pointer;
+
   h2 {
     text-align: center;
-
+    margin-bottom: 36px;
     font-size: 10vmin;
   }
 
   p {
-    font-size: 6vmin;
+    font-size: 5vmin;
     text-shadow: 0 0 10px white;
     animation: animateText 2s infinite ease-in-out;
   }
@@ -32,19 +34,40 @@ const Root = styled.div`
   }
 `;
 
-export default function Loading() {
-  const [percentage, setPercentage] = useState(7);
+export default function Loading({ onLoaded }) {
+  const [percentage, setPercentage] = useState(3);
+  const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
-    GameAudio.addEventListener("progress", (value) => {
+    Loader.load();
+    Loader.addEventListener("progress", (value) => {
       setPercentage(Math.round(100 * value));
+    });
+
+    Loader.addEventListener("completed", () => {
+      setCompleted(true);
     });
   }, []);
 
+  const onClick = () => {
+    if (completed) {
+      onLoaded();
+    }
+  };
+
   return (
-    <Root>
-      <h2>Loading Game Assests...</h2>
-      <p>{percentage}%</p>
+    <Root onClick={onClick}>
+      {completed ? (
+        <>
+          <h2>Ready!!</h2>
+          <p>Click Anywhere to Start</p>
+        </>
+      ) : (
+        <>
+          <h2>Loading Game Assests...</h2>
+          <p>{percentage}%</p>
+        </>
+      )}
     </Root>
   );
 }
