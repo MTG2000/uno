@@ -3,6 +3,7 @@ import Avatar from "../../Shared/Avatar/Avatar";
 import { Grid, Typography } from "@mui/material";
 import Button from "../../Shared/Button/Button";
 import { Link } from "react-router-dom";
+import { useSelector } from "../../../utils/hooks";
 
 const Root = styled.div`
   position: fixed;
@@ -15,7 +16,7 @@ const Root = styled.div`
   border-radius: 12px;
   font-size: 2rem;
   .row {
-    &:first-of-type {
+    &.me {
       color: yellow;
 
       animation: pulse 1s infinite;
@@ -43,13 +44,15 @@ const Root = styled.div`
 `;
 
 export default function Scoreboard({ players }) {
+  const playerId = useSelector((state) => state.game.playerId);
+
   return (
     <Root>
       <Typography variant="h2" textAlign="center" fontWeight={600} mb={6}>
         Game Finished!!
       </Typography>
       {players.map((p, idx) => (
-        <div className="row" key={idx}>
+        <div className={`row ${p.id === playerId && "me"}`} key={idx}>
           <div className="order">{idx + 1}</div>
           <div className="img">
             <Avatar seed={`${p.name}${p.img}`} />{" "}
