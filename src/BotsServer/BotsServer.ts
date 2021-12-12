@@ -172,22 +172,24 @@ export default class BotsServer extends EventsObject {
 
     if (card?.action === "reverse") this.direction *= -1;
 
-    //Move to next player ( if not wild card )
-    if (card?.action === "skip")
-      nxtPlayer = wrapMod(
-        this.curPlayer + 2 * this.direction,
-        this.players.length
-      );
-    else if (card?.action !== "wild")
-      nxtPlayer = wrapMod(
-        this.curPlayer + 1 * this.direction,
-        this.players.length
-      );
+    const moveForward = (steps: number = 1) => {
+      while (steps--) {
+        nxtPlayer = wrapMod(
+          nxtPlayer + 1 * this.direction,
+          this.players.length
+        );
+        while (this.players[nxtPlayer].cards.length === 0)
+          nxtPlayer = wrapMod(
+            nxtPlayer + 1 * this.direction,
+            this.players.length
+          );
+      }
+    };
 
-    //if nxtPlayer is out of the game (no cards left with him)
-    while (this.players[nxtPlayer].cards.length === 0) {
-      nxtPlayer = wrapMod(nxtPlayer + 1 * this.direction, this.players.length);
-    }
+    //Move to next player ( if not wild card )
+    if (card?.action === "skip") {
+      moveForward(2);
+    } else if (card?.action !== "wild") moveForward();
 
     return nxtPlayer;
   }
