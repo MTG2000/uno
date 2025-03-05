@@ -3,25 +3,39 @@ class _GameAudio {
   effectsVolume = 1;
   audioTracks = {};
   musicPlaying;
+  audioTracksFailed = {};
 
   preload(audioTracks, onload) {
     this.audioTracks = audioTracks;
     for (const url of Object.values(this.audioTracks)) {
       var audio = new Audio();
+
+      const cb = () => {
+        onload();
+      };
+
       audio.addEventListener(
-        "canplaythrough",
-        () => {
-          onload();
-        },
+        "canplaythrough",cb,
         false
       );
       audio.src = url;
+
+      setTimeout(()=>{
+        if(audio.readyState !== 4){
+          this.audioTracksFailed[url] = true;
+          onload();
+          audio.removeEventListener("canplaythrough",cb);
+          console.error("Failed to load audio track: ", url);
+        }
+      }, 10000)
     }
   }
 
   playMusic(name) {
     if (!this.audioTracks[name])
       throw new Error("No Audio Track with this name");
+
+    if(this.audioTracksFailed[this.audioTracks[name]]) return;
 
     if (this.musicPlaying) return;
     this.musicPlaying = new Audio(this.audioTracks[name]);
@@ -33,6 +47,8 @@ class _GameAudio {
   playAudio(name, reps = 1) {
     if (!this.audioTracks[name])
       throw new Error("No Audio Track with this name");
+
+    if(this.audioTracksFailed[this.audioTracks[name]]) return;
 
     for (let i = 0; i < reps; i++) {
       setTimeout(() => {
