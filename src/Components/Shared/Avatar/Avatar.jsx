@@ -24,8 +24,8 @@ const Cavatar = styled.div`
 `;
 const Avatar = ({ seed }) => {
   return (
-    <Cavatar>
-      <img src={`https://avatars.dicebear.com/api/male/${seed}.svg`} alt="" />
+    <Cavatar> 
+      <img src={`https://api.dicebear.com/9.x/adventurer/svg?seed=${seed}`} alt="" />
     </Cavatar>
   );
 };
